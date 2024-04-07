@@ -13,6 +13,9 @@
 
     <!--vendors styles-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 
@@ -26,7 +29,7 @@
     <section class="smart-scroll">
         <div class="container-fluid">
             <nav class="navbar navbar-expand-md navbar-dark">
-                <a class="navbar-brand heading-black" href="index.html">
+                <a class="navbar-brand heading-black" href="{{ url('/') }}">
                     ContentCraft
                 </a>
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
@@ -37,10 +40,10 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link page-scroll" href="#features">AI Writing</a>
+                            <a class="nav-link page-scroll" href="{{ url('/text') }}">AI Writing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link page-scroll" href="#pricing">Image-to-Text</a>
+                            <a class="nav-link page-scroll" href="{{ url('/image') }}">Image-to-Text</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="#faq">FAQ</a>
@@ -65,7 +68,7 @@
     @yield('content')
 
     <!--footer-->
-    <footer class="py-6">
+    <footer class="py-4">
         <div class="container">
             <div class="row">
                 <div class="col-sm-5 mr-auto">
