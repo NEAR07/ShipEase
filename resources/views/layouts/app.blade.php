@@ -21,6 +21,9 @@
 
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="stylesheet" href="{{ asset('assets/css/default.css') }}" id="theme-color">
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -53,9 +56,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link page-scroll d-flex flex-row align-items-center text-primary"
-                                href="#">
+                                href="{{ url('/image') }}">
                                 <em data-feather="layout" width="18" height="18" class="mr-2"></em>
-                                Try Generator
+                                Try Image Analysis
                             </a>
                         </li>
                     </ul>

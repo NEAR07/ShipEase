@@ -1,18 +1,30 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+        body {
+            background-color: #0B0B0B;
+        }
+
+        .bg-hero {
+            background-image: url("{{ asset('assets/img/hero.jpg') }}");
+        }
+
+        .section-angle {
+            border-color: #1de9b6;
+        }
+    </style>
     <!--hero header-->
     <section class="py-7 py-md-0 bg-hero" id="home">
         <div class="container">
-            <div class="row vh-md-100">
+            <div class="row vh-md-100 hero">
                 <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
-                    <h1 class="heading-black text-capitalize">Quickly build landing pages with Knight</h1>
-                    <p class="lead py-3">Knight is a platform that helps freelancers and companies build beautiful
-                        landing
-                        pages in minutes. Sign up for free.</p>
-                    <button class="btn btn-primary d-inline-flex flex-row align-items-center">
-                        Get started now
-                        <em class="ml-2" data-feather="arrow-right"></em>
-                    </button>
+                    <h1 class="heading-black text-capitalize">The Only Limit Is Your Imagination</h1>
+                    <p class="lead py-3">Free. Easy. No Signup Required</p>
+                    <a href="{{ url('/text') }}">
+                        <button class="btn btn-primary d-inline-flex flex-row align-items-center">
+                            Check our new AI
+                            <em class="ml-2" data-feather="arrow-right"></em>
+                        </button></a>
                 </div>
             </div>
         </div>

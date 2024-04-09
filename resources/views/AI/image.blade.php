@@ -4,6 +4,7 @@
     <style>
         #loader {
             display: none;
+            height: 20px;
             margin-top: 10px;
         }
     </style>
@@ -15,11 +16,17 @@
                         <label for="imageInput" class="form-label">Upload an image:</label>
                         <input type="file" accept="image/*" class="form-control" id="imageInput" required>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="generateContent()"><i
-                            class="fa-solid fa-gear"></i> Generate</button>
+                    <div class="mb-3">
+                        <label for="promptInput" class="form-label">Type your prompt:</label>
+                        <input type="text" class="form-control" id="promptInput" name="prompt"
+                            placeholder="Ex: Describe this image" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="generateContent()">
+                        <i class="fa-solid fa-gear"></i> Generate
+                    </button>
                 </form>
 
-                <div id="loader" class="alert alert-info" role="alert">
+                <div id="loader">
                     Processing...
                 </div>
 
@@ -32,9 +39,15 @@
         async function generateContent() {
             const imageInput = document.getElementById("imageInput");
             const file = imageInput.files[0];
+            const promptInput = document.getElementById("promptInput").value.trim(); // Trim whitespace
 
             if (!file) {
                 alert("Please select an image.");
+                return;
+            }
+
+            if (!promptInput) { // Check if prompt is empty
+                alert("Please enter a prompt.");
                 return;
             }
 
@@ -46,6 +59,7 @@
 
             const formData = new FormData();
             formData.append("image", file);
+            formData.append("prompt", promptInput); // Include user's entered prompt
 
             try {
                 const response = await fetch(
