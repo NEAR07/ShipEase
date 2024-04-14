@@ -9907,7 +9907,7 @@ body {
 .section-angle {
     position: relative;
     border-color: inherit;
-    background: #000000;
+    background: #0b0b0b;
 }
 .section-angle:before,
 .section-angle:after {

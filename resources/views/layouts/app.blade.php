@@ -49,7 +49,7 @@
                             <a class="nav-link page-scroll" href="{{ url('/image') }}">Image-to-Text</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link page-scroll" href="#faq">FAQ</a>
+                            <a class="nav-link page-scroll" href="{{ url('/pdf-to-word') }}">PDF</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="#blog">Blog</a>
