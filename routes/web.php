@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ConverterController;
+use App\Http\Controllers\WordToPDFController;
+use App\Http\Controllers\pdfTextController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -15,9 +17,13 @@ Route::get('/image', function () {
     return view('AI.image');
 });
 
-Route::get('/pdf-to-word', function () {
-    return view('Multimedia.upload');
-});
+//Word2Pdf
+Route::get('word-to-pdf', [WordToPDFController::class, 'index']);
+Route::post('word-to-pdf', [WordToPDFController::class, 'store'])->name('word.to.pdf.store');
 
-Route::get('/pdf-to-word', [ConverterController::class, 'index']);
-Route::post('/convert', [ConverterController::class, 'convert']);
+//Pdf2Text
+Route::get('/pdf-to-text', function () {
+    return view('Multimedia.pdfText');
+});
+Route::get('/pdf-to-text', [pdfTextController::class, 'index']);
+Route::post('/extract', [pdfTextController::class, 'extract'])->name('pdf.to.text.extract');

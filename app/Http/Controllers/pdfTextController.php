@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 use Smalot\PdfParser\Parser;
 
-class ConverterController extends Controller
+class pdfTextController extends Controller
 {
     public function index()
     {
-        return view('converter');
+        return view('Multimedia.pdfText');
     }
 
-    public function convert(Request $request)
+    public function extract(Request $request)
     {
         $pdfFile = $request->file('pdf');
 
@@ -22,7 +22,7 @@ class ConverterController extends Controller
             'pdf' => 'required|mimes:pdf'
         ]);
 
-        // Convert PDF to Word
+        // Convert PDF to Word text
         $parser = new Parser();
         $pdf = $parser->parseFile($pdfFile->path());
         $pages = $pdf->getPages();
@@ -38,8 +38,8 @@ class ConverterController extends Controller
 
         // Save Word document
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save(storage_path('app/public/converted.docx'));
+        $objWriter->save(storage_path('app/public/extracted.docx'));
 
-        return response()->download(storage_path('app/public/converted.docx'));
+        return response()->download(storage_path('app/public/extracted.docx'));
     }
 }
