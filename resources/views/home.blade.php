@@ -24,9 +24,9 @@
                 <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
                     <h1 class="heading-black text-capitalize">The Only Limit Is Your Imagination</h1>
                     <p class="lead py-3">Free. Easy. No Signup Required</p>
-                    <a href="{{ url('/text') }}">
+                    <a href="{{ url('/all-tools') }}">
                         <button class="btn btn-primary d-inline-flex flex-row align-items-center">
-                            Check our new AI
+                            Get Started
                             <em class="ml-2" data-feather="arrow-right"></em>
                         </button></a>
                 </div>
