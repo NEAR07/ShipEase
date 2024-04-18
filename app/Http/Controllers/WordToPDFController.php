@@ -6,12 +6,6 @@ use Illuminate\Http\Request;
 
 class WordToPDFController extends Controller
 {
-
-    public function index(Request $request)
-    {
-        return view('Multimedia.word');
-    }
-
     public function store(Request $request)
     {
         $fileName = time() . '.' . $request->file->extension();

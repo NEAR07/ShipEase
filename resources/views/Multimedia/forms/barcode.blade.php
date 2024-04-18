@@ -1,26 +1,49 @@
-@if (!isset($barcodeImage))
-    <form id="barcode-form" action="{{ route('barcode.generate') }}" method="post">
-        @csrf
-        <div class="form-group">
-            <label for="barcode_text" class="form-label" style="font-weight: 800;">Enter your Barcode information</label>
-            <div class="input-group">
-                <input type="text" class="form-control" name="barcode_text" id="barcode_text">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary generate-button" id="generateBarcodeButton"
-                        type="submit">Generate</button>
-                </div>
-            </div>
+@extends('layouts.app')
+<title>QR Code Maker</title>
+@section('content')
+    <form id="barcode-form" action="/generate-barcode" method="GET" class="mt-7">
+        <div class="input-group mb-3">
+            <input type="text" name="barcode_text" id="barcode-text" class="form-control" placeholder="Enter Barcode Text"
+                aria-label="Enter Barcode Text" aria-describedby="generate-button">
+            <button type="submit" id="generate-button" class="btn btn-primary">Generate Barcode</button>
         </div>
-
     </form>
-@endif
 
-@if (isset($barcodeImage))
-    <div id="barcode-container">
-        <img src="data:image/png;base64, {!! base64_encode($barcodeImage) !!}">
-        @if (isset($filename))
-            <p style="padding-top: 15px;"><button class="btn btn-primary download-link"
-                    style="background-color: #5f2dee" data-filename="{{ $filename }}">Download as PNG</button></p>
-        @endif
-    </div>
-@endif
+
+
+    <script>
+        document.getElementById('barcode-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get the barcode text
+            const barcodeText = document.getElementById('barcode-text').value.trim();
+
+            if (barcodeText === '') {
+                alert('Please enter barcode text');
+                return;
+            }
+
+            fetch(this.action + '?' + new URLSearchParams(new FormData(this)))
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error('Failed to generate barcode');
+                })
+                .then(blob => {
+                    // Create a temporary link element to trigger the download
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Barcode.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+@endsection

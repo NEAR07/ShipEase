@@ -51,23 +51,29 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdownPDF"
                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                PDF
+                                Files
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
                                 <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
-                                <a class="dropdown-item" href="{{ url('/pdf-to-word') }}">PDF to Word</a>
+                                <a class="dropdown-item" href="{{ url('/word-to-pdf') }}">Word to PDF</a>
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdownPDF"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Other
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
+                                <a class="dropdown-item" href="{{ url('/url-shortener') }}">Shorten URL</a>
+                                <a class="dropdown-item" href="{{ url('/qr-code') }}">QR Maker</a>
+                                <a class="dropdown-item" href="{{ url('/barcode') }}">Barcode Maker</a>
 
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link page-scroll" href="{{ url('/word-to-pdf') }}">Word</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link page-scroll" href="{{ url('/url-shortener') }}">Shorten URL</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link page-scroll d-flex flex-row align-items-center text-primary"
-                                href="{{ url('/all-tools') }}">
+                                href="{{ url('/all') }}">
                                 <em data-feather="layout" width="18" height="18" class="mr-2"></em>
                                 Try All Tools
                             </a>
