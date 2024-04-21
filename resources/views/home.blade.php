@@ -9,12 +9,36 @@
             background-image: url("{{ asset('assets/img/hero.jpg') }}");
         }
 
+        #features,
+        #blog,
+        #about,
+        #footer {
+            background-image: url("{{ asset('assets/img/bg.svg') }}");
+        }
+
         .section-angle {
             border-color: #1de9b6;
         }
 
         .card {
             background-color: #2d2d2d;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .product-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: #666;
         }
     </style>
     <!--hero header-->
@@ -35,56 +59,74 @@
     </section>
 
     <!-- features section -->
-    <section class="pt-6 pb-7" id="features">
+    <section class="pt-6 section-angle bottom-left" id="features">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mx-auto text-center">
-                    <h2 class="heading-black">Knight offers everything you need.</h2>
-                    <p class="text-muted lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                        nisi
-                        commodo, tempus odio a, vestibulum nibh.</p>
+                    <h2 class="heading-black">Introducing New AI Features!</h2>
+                    <p class="text-muted lead">Here's some amazing stuff our AI can do for you.</p>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col-md-10 mx-auto">
                     <div class="row feature-boxes">
-                        <div class="col-md-6 box">
+                        <div class="col-md-4 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="edit-3" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Create once. Share everywhere.</h5>
+                            <h5>Content Writing</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
                                 nisi commodo, tempus odio a, vestibulum nibh.</p>
                         </div>
-                        <div class="col-md-6 box">
-                            <div class="icon-box box-success">
+                        <div class="col-md-4 box">
+                            <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
-                                    <span data-feather="monitor" width="35" height="35"></span>
+                                    <span data-feather="type" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Unlimited devices</h5>
+                            <h5>Grammar Checking</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
                                 nisi commodo, tempus odio a, vestibulum nibh.</p>
                         </div>
-                        <div class="col-md-6 box">
-                            <div class="icon-box box-danger">
+                        <div class="col-md-4 box">
+                            <div class="icon-box box-primary">
+                                <div class="icon-box-inner">
+                                    <span data-feather="align-justify" width="35" height="35"></span>
+                                </div>
+                            </div>
+                            <h5>Text Summarization</h5>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
+                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                        </div>
+                        <div class="col-md-4 box">
+                            <div class="icon-box box-primary">
+                                <div class="icon-box-inner">
+                                    <span data-feather="code" width="35" height="35"></span>
+                                </div>
+                            </div>
+                            <h5>Code Generation</h5>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
+                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                        </div>
+                        <div class="col-md-4 box">
+                            <div class="icon-box box-primary">
+                                <div class="icon-box-inner">
+                                    <span data-feather="image" width="35" height="35"></span>
+                                </div>
+                            </div>
+                            <h5>Image Description</h5>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
+                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                        </div>
+                        <div class="col-md-4 box">
+                            <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="layout" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Beautiful tempates & layouts</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
-                        </div>
-                        <div class="col-md-6 box">
-                            <div class="icon-box box-info">
-                                <div class="icon-box-inner">
-                                    <span data-feather="globe" width="35" height="35"></span>
-                                </div>
-                            </div>
-                            <h5>Available globally</h5>
+                            <h5>Picture Based Content</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
                                 nisi commodo, tempus odio a, vestibulum nibh.</p>
                         </div>
@@ -94,119 +136,107 @@
         </div>
     </section>
 
-    <!--news section-->
-    <section class="py-7 bg-dark" id="blog">
+    <!--Premium section-->
+    <section class="py-7 bg-dark section-angle top-right bottom-right" id="blog">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mx-auto text-center">
-                    <h2 class="heading-black">News from Knight.</h2>
-                    <p class="text-muted lead">What's new at Knight.</p>
+                    <h2 class="heading-black">Premium Tools For Free!</h2>
+                    <p class="text-muted lead">Things you would usually pay for.</p>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col-md-4">
-                    <div class="card">
-                        <a href="#">
-                            <img class="card-img-top img-raised" src="img/blog-1.jpg" alt="Blog 1">
-                        </a>
-                        <div class="card-body">
-                            <a href="#" class="card-title mb-2">
-                                <h5>We launch new iOS & Android mobile apps</h5>
-                            </a>
-                            <p class="text-muted small-xl mb-2">Sep 27, 2018</p>
-                            <p class="card-text">Nam liber tempor cum soluta nobis eleifend option congue nihil imper,
-                                consectetur adipiscing elit. <a href="#">Learn more</a></p>
-                        </div>
+                    <div class="product-card text-center bg-dark">
+                        <i class="fas fa-qrcode fa-3x mb-3"></i>
+                        <h2 class="product-name">QR Code Generator</h2>
+                        <p class="product-description">Generate QR codes and save as SVGs.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card">
-                        <a href="#">
-                            <img class="card-img-top img-raised" src="img/blog-2.jpg" alt="Blog 2">
-                        </a>
-                        <div class="card-body">
-                            <a href="#" class="card-title mb-2">
-                                <h5>New update is available for the editor</h5>
-                            </a>
-                            <p class="text-muted small-xl mb-2">August 16, 2018</p>
-                            <p class="card-text">Nam liber tempor cum soluta nobis eleifend option congue nihil imper,
-                                consectetur adipiscing elit. <a href="#">Learn more</a></p>
-                        </div>
+                    <div class="product-card text-center bg-dark">
+                        <i class="fa-regular fa-image fa-3x mb-3"></i>
+                        <h2 class="product-name">Image Analysis</h2>
+                        <p class="product-description">Use AI to talk to pictures.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card">
-                        <a href="#">
-                            <img class="card-img-top img-raised" src="img/blog-3.jpg" alt="Blog 3">
-                        </a>
-                        <div class="card-body">
-                            <a href="#" class="card-title mb-2">
-                                <h5>The story of building #1 page builder</h5>
-                            </a>
-                            <p class="text-muted small-xl mb-2">December 2nd, 2017</p>
-                            <p class="card-text">Nam liber tempor cum soluta nobis eleifend option congue nihil imper,
-                                consectetur adipiscing elit. <a href="#">Learn more</a></p>
-                        </div>
+                    <div class="product-card text-center bg-dark">
+                        <i class="fa-regular fa-file-pdf fa-3x mb-3"></i>
+                        <h2 class="product-name">PDF Converter</h2>
+                        <p class="product-description">Solve your PDF problems.
+                        </p>
                     </div>
-                </div>
-            </div>
-            <div class="row mt-6">
-                <div class="col-md-6 mx-auto text-center">
-                    <a href="#" class="btn btn-primary">View all posts</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!--faq section-->
-    <section class="py-7 section-angle top-left bottom-left" id="faq">
+    <!--About section-->
+    <section class="pb-6 pt-7 section-angle top-left" id="about">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 mx-auto text-center">
-                    <h2>Frequently asked questions</h2>
-                    <p class="text-muted lead">Answers to most common questions.</p>
+                <div class="col-md-7 mx-auto text-center">
+                    <h2 class="text-primary">What ContentCraft offers?</h2>
+                    <p class="text-muted lead">Tools to make your life easier.</p>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col-md-10 mx-auto">
                     <div class="row">
                         <div class="col-md-6 mb-5">
-                            <h6>Can I try it for free?</h6>
-                            <p class="text-muted">Nam liber tempor cum soluta nobis eleifend option congue nihil imper
-                                per tem por legere me doming.</p>
+                            <div class="media">
+                                <div class="icon-box">
+                                    <div class="icon-box-inner small-xs text-primary">
+                                        <span data-feather="zap" width="30" height="30"></span>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="mt-3 mb-1">Quick solution</h5>
+                                    Do the tedious tasks fast and easy.
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-5">
-                            <h6>Do you have hidden fees?</h6>
-                            <p class="text-muted">Nam liber tempor cum soluta nobis eleifend option congue nihil imper
-                                per tem por legere me doming.</p>
+                            <div class="media">
+                                <div class="icon-box">
+                                    <div class="icon-box-inner small-xs text-primary">
+                                        <span data-feather="shield" width="30" height="30"></span>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="mt-3 mb-1">Secure environment</h5>
+                                    Your data is only yours.
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-5">
-                            <h6>What are the payment methods you accept?</h6>
-                            <p class="text-muted">Nam liber tempor cum soluta nobis eleifend option congue nihil imper
-                                per tem por legere me doming.</p>
+                            <div class="media">
+                                <div class="icon-box">
+                                    <div class="icon-box-inner small-xs text-primary">
+                                        <span data-feather="clock" width="30" height="30"></span>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="mt-3 mb-1">24/7 availability</h5>
+                                    Anytime. Anywhere
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-5">
-                            <h6>How often do you release updates?</h6>
-                            <p class="text-muted">Nam liber tempor cum soluta nobis eleifend option congue nihil imper
-                                per tem por legere me doming.</p>
-                        </div>
-                        <div class="col-md-6 mb-5">
-                            <h6>What is your refund policy?</h6>
-                            <p class="text-muted">Nam liber tempor cum soluta nobis eleifend option congue nihil imper
-                                per tem por legere me doming.</p>
-                        </div>
-                        <div class="col-md-6 mb-5">
-                            <h6>How can I contact you?</h6>
-                            <p class="text-muted">Nam liber tempor cum soluta nobis eleifend option congue nihil imper
-                                per tem por legere me doming.</p>
+                            <div class="media">
+                                <div class="icon-box">
+                                    <div class="icon-box-inner small-xs text-primary">
+                                        <span data-feather="settings" width="30" height="30"></span>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="mt-3 mb-1">More additions</h5>
+                                    Routinely adding more tools.
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-6 mx-auto text-center">
-                    <h5 class="mb-4">Have questions?</h5>
-                    <a href="#" class="btn btn-primary">Contact us</a>
                 </div>
             </div>
         </div>

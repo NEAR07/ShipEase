@@ -1,6 +1,5 @@
 {
     "private": true,
-    
     "scripts": {
         "dev": "vite",
         "build": "vite build"
@@ -17,6 +16,8 @@
         "dotenv": "^16.3.1",
         "express": "^4.19.2",
         "google-auth-library": "^9.4.1",
-        "multer": "^1.4.5-lts.1"
+        "multer": "^1.4.5-lts.1",
+        "python-shell": "^5.0.0",
+        "user-home": "^3.0.0"
     }
 }
