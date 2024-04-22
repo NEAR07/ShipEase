@@ -9,11 +9,23 @@
             background-image: url("{{ asset('assets/img/hero.jpg') }}");
         }
 
-        #features,
-        #blog,
-        #about,
-        #footer {
-            background-image: url("{{ asset('assets/img/bg.svg') }}");
+        #features {
+            background-image: url("{{ asset('assets/img/bg2.jpeg') }}");
+            background-size: cover;
+        }
+
+
+
+        #blog {
+            background-image: url("{{ asset('assets/img/bg3.jpeg') }}");
+            background-size: cover;
+            background-color: rgba(16, 14, 14, 0.5);
+        }
+
+        #about {
+            background-image: url("{{ asset('assets/img/bg1.jpeg') }}");
+            background-size: cover;
+            background-color: rgba(16, 14, 14, 0.5);
         }
 
         .section-angle {
@@ -60,7 +72,7 @@
 
     <!-- features section -->
     <section class="pt-6 section-angle bottom-left" id="features">
-        <div class="container">
+        <div class="container overlay">
             <div class="row">
                 <div class="col-md-6 mx-auto text-center">
                     <h2 class="heading-black">Introducing New AI Features!</h2>
@@ -77,8 +89,7 @@
                                 </div>
                             </div>
                             <h5>Content Writing</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="col-md-4 box">
                             <div class="icon-box box-primary">
@@ -87,8 +98,7 @@
                                 </div>
                             </div>
                             <h5>Grammar Checking</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="col-md-4 box">
                             <div class="icon-box box-primary">
@@ -97,8 +107,7 @@
                                 </div>
                             </div>
                             <h5>Text Summarization</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="col-md-4 box">
                             <div class="icon-box box-primary">
@@ -107,8 +116,7 @@
                                 </div>
                             </div>
                             <h5>Code Generation</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="col-md-4 box">
                             <div class="icon-box box-primary">
@@ -117,8 +125,7 @@
                                 </div>
                             </div>
                             <h5>Image Description</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="col-md-4 box">
                             <div class="icon-box box-primary">
@@ -127,8 +134,7 @@
                                 </div>
                             </div>
                             <h5>Picture Based Content</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in
-                                nisi commodo, tempus odio a, vestibulum nibh.</p>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                 </div>
