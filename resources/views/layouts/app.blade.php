@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 
     <!-- Bootstrap CSS / Color Scheme -->
-    <link rel="stylesheet" href="{{ asset('assets/css/default.css') }}" id="theme-color">
+    <link rel="stylesheet" href="{{ asset('assets/css/orange.css') }}" id="theme-color">
     <style>
 
     </style>

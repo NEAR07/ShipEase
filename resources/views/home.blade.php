@@ -14,9 +14,7 @@
             background-size: cover;
         }
 
-
-
-        #blog {
+        #premium {
             background-image: url("{{ asset('assets/img/bg3.jpeg') }}");
             background-size: cover;
             background-color: rgba(16, 14, 14, 0.5);
@@ -29,7 +27,7 @@
         }
 
         .section-angle {
-            border-color: #1de9b6;
+            border-color: #fd7014;
         }
 
         .card {
@@ -37,8 +35,6 @@
         }
 
         .product-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
         }
@@ -71,7 +67,7 @@
     </section>
 
     <!-- features section -->
-    <section class="pt-6 section-angle bottom-left" id="features">
+    <section class="pt-6" id="features">
         <div class="container overlay">
             <div class="row">
                 <div class="col-md-6 mx-auto text-center">
@@ -82,7 +78,7 @@
             <div class="row mt-5">
                 <div class="col-md-10 mx-auto">
                     <div class="row feature-boxes">
-                        <div class="col-md-4 box">
+                        <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="edit-3" width="35" height="35"></span>
@@ -91,7 +87,7 @@
                             <h5>Content Writing</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                        <div class="col-md-4 box">
+                        <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="type" width="35" height="35"></span>
@@ -100,7 +96,7 @@
                             <h5>Grammar Checking</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                        <div class="col-md-4 box">
+                        <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="align-justify" width="35" height="35"></span>
@@ -109,7 +105,7 @@
                             <h5>Text Summarization</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                        <div class="col-md-4 box">
+                        <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="code" width="35" height="35"></span>
@@ -118,7 +114,7 @@
                             <h5>Code Generation</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                        <div class="col-md-4 box">
+                        <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="image" width="35" height="35"></span>
@@ -127,7 +123,7 @@
                             <h5>Image Description</h5>
                             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                        <div class="col-md-4 box">
+                        <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
                                     <span data-feather="layout" width="35" height="35"></span>
@@ -143,8 +139,8 @@
     </section>
 
     <!--Premium section-->
-    <section class="py-7 bg-dark section-angle top-right bottom-right" id="blog">
-        <div class="container">
+    <section class="py-7 section-angle top-right bottom-left" id="premium">
+        <div class="container overlay">
             <div class="row">
                 <div class="col-md-6 mx-auto text-center">
                     <h2 class="heading-black">Premium Tools For Free!</h2>
@@ -179,7 +175,7 @@
     </section>
 
     <!--About section-->
-    <section class="pb-6 pt-7 section-angle top-left" id="about">
+    <section class="pb-6 pt-7" id="about">
         <div class="container">
             <div class="row">
                 <div class="col-md-7 mx-auto text-center">
@@ -247,4 +243,5 @@
             </div>
         </div>
     </section>
+    <script></script>
 @endsection
