@@ -48,6 +48,10 @@
             font-size: 16px;
             color: #666;
         }
+
+        i.premium {
+            color: #ea782f;
+        }
     </style>
     <!--hero header-->
     <section class="py-7 py-md-0 bg-hero" id="home">
@@ -150,21 +154,21 @@
             <div class="row mt-5">
                 <div class="col-md-4">
                     <div class="product-card text-center bg-dark">
-                        <i class="fas fa-qrcode fa-3x mb-3"></i>
+                        <i class="fas fa-qrcode fa-3x mb-3 premium"></i>
                         <h2 class="product-name">QR Code Generator</h2>
                         <p class="product-description">Generate QR codes and save as SVGs.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="product-card text-center bg-dark">
-                        <i class="fa-regular fa-image fa-3x mb-3"></i>
+                        <i class="fa-regular fa-image fa-3x mb-3 premium"></i>
                         <h2 class="product-name">Image Analysis</h2>
                         <p class="product-description">Use AI to talk to pictures.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="product-card text-center bg-dark">
-                        <i class="fa-regular fa-file-pdf fa-3x mb-3"></i>
+                        <i class="fa-regular fa-file-pdf fa-3x mb-3 premium"></i>
                         <h2 class="product-name">PDF Converter</h2>
                         <p class="product-description">Solve your PDF problems.
                         </p>
