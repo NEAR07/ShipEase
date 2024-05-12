@@ -21,6 +21,11 @@ Route::get('/image', function () {
     return view('AI.image');
 });
 
+//All tools
+Route::get('/all-tools', function () {
+    return view('all');
+});
+
 //Word2Pdf
 Route::get('/word-to-pdf', function () {
     return view('Multimedia.word');

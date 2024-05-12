@@ -26,6 +26,10 @@
             background-color: rgba(16, 14, 14, 0.5);
         }
 
+        .bg-dark {
+            background-color: rgba(255, 145, 0, 0.1) !important
+        }
+
         .section-angle {
             border-color: #fd7014;
         }
@@ -37,6 +41,7 @@
         .product-card {
             padding: 20px;
             margin-bottom: 20px;
+            border-radius: 5px;
         }
 
         .product-name {

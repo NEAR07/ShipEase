@@ -21,7 +21,51 @@
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="stylesheet" href="{{ asset('assets/css/orange.css') }}" id="theme-color">
     <style>
+        .search-form {
+            display: flex;
+            align-items: center;
+            margin-right: 3rem;
+        }
 
+        .search-input {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 8px 12px;
+            width: 250px;
+        }
+
+        .search-btn {
+            background-color: #fd7014;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background-color: whitesmoke;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .navbar-nav {
+                margin-top: 10px;
+                padding-top: 0.5rem;
+                background-color: black;
+                align-items: center;
+                line-height: 2.5;
+                border: 2px solid orange !important;
+                border-radius: 10px;
+            }
+
+            .input-group {
+                width: 86%;
+            }
+        }
     </style>
 </head>
 
@@ -41,6 +85,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
+                        <!-- Search Bar -->
+                        <form class="form-inline my-2 my-lg-0 ml-auto search-form" action="" method="GET">
+                            <div class="input-group">
+                                <input class="form-control search-input" type="search" placeholder="Search Tools"
+                                    aria-label="Search" name="query">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-light search-btn" type="submit"><i
+                                            class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="{{ url('/text') }}">AI Writing</a>
                         </li>
@@ -54,6 +109,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
                                 <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
+                                <a class="dropdown-item" href="{{ url('/upload') }}">PDF to Word</a>
                                 <a class="dropdown-item" href="{{ url('/word-to-pdf') }}">Word to PDF</a>
 
                             </div>
@@ -61,7 +117,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdownPDF"
                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Other
+                                More
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
                                 <a class="dropdown-item" href="{{ url('/url-shortener') }}">Shorten URL</a>
@@ -72,7 +128,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link page-scroll d-flex flex-row align-items-center text-primary"
-                                href="{{ url('/upload') }}">
+                                href="{{ url('/all-tools') }}">
                                 <em data-feather="settings" width="18" height="18" class="mr-2"></em>
                                 Try All Tools
                             </a>
@@ -83,6 +139,7 @@
             </nav>
         </div>
     </section>
+
 
     {{-- Main Body --}}
     @yield('content')
@@ -127,7 +184,7 @@
                 <div class="col-sm-2">
                     <h5>Other Tools</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/') }}">PDF to Word</a></li>
+                        <li><a href="{{ url('/upload') }}">PDF to Word</a></li>
                         <li><a href="{{ url('/qr-code') }}">QR Code Maker</a></li>
                         <li><a href="{{ url('/all-tools') }}">More tools</a></li>
                     </ul>
