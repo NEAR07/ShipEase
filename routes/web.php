@@ -6,7 +6,8 @@ use App\Http\Controllers\pdfTextController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\URLShortenerController;
-use App\Http\Controllers\ConversionController;
+use App\Http\Controllers\pdfWordController;
+use Illuminate\Routing\Route as RoutingRoute;
 
 //Home
 Route::get('/', function () {
@@ -58,5 +59,5 @@ Route::post('/shorten-url', [URLShortenerController::class, 'shorten'])->name('u
 Route::get('/cra.ft/{shortenedURL}', [URLShortenerController::class, 'redirect']);
 
 //Pdf-to-Docx
-Route::get('/upload', [ConversionController::class, 'showUploadForm'])->name('upload.form');
-Route::post('/convert', [ConversionController::class, 'convertPdfToDocx'])->name('convert');
+Route::get('/pdf-to-word', [pdfWordController::class, 'showUploadForm'])->name('upload.form');
+Route::post('/convert', [pdfWordController::class, 'convertPdfToDocx'])->name('convert');

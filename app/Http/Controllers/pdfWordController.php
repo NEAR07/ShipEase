@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class ConversionController extends Controller
+class pdfWordController extends Controller
 {
     public function showUploadForm()
     {
-        return view('upload');
+        return view('pdfWord');
     }
 
     public function convertPdfToDocx(Request $request)
