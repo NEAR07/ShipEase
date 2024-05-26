@@ -21,6 +21,11 @@
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="stylesheet" href="{{ asset('assets/css/orange.css') }}" id="theme-color">
     <style>
+        .logo {
+            height: 55px;
+            width: auto
+        }
+
         .search-form {
             display: flex;
             align-items: center;
@@ -76,7 +81,7 @@
         <div class="container-fluid">
             <nav class="navbar navbar-expand-md navbar-dark">
                 <a class="navbar-brand heading-black" href="{{ url('/') }}">
-                    ContentCraft
+                    <img src="{{ asset('assets/img/logo2.png') }}" alt="Logo" class="logo">
                 </a>
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
                     data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
@@ -85,17 +90,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
-                        <!-- Search Bar -->
-                        <form class="form-inline my-2 my-lg-0 ml-auto search-form" action="" method="GET">
-                            <div class="input-group">
-                                <input class="form-control search-input" type="search" placeholder="Search Tools"
-                                    aria-label="Search" name="query">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-light search-btn" type="submit"><i
-                                            class="fas fa-search"></i></button>
-                                </div>
-                            </div>
-                        </form>
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="{{ url('/text') }}">AI Writing</a>
                         </li>
@@ -109,7 +103,6 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
                                 <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
-                                <a class="dropdown-item" href="{{ url('/pdf-to-word') }}">PDF to Word</a>
                                 <a class="dropdown-item" href="{{ url('/word-to-pdf') }}">Word to PDF</a>
 
                             </div>
@@ -184,7 +177,7 @@
                 <div class="col-sm-2">
                     <h5>Other Tools</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/upload') }}">PDF to Word</a></li>
+                        <li><a href="{{ url('/pdf-to-text') }}">PDF to Text</a></li>
                         <li><a href="{{ url('/qr-code') }}">QR Code Maker</a></li>
                         <li><a href="{{ url('/all-tools') }}">More tools</a></li>
                     </ul>
