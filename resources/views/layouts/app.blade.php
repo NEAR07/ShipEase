@@ -103,6 +103,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
                                 <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
+                                <a class="dropdown-item" href="{{ url('/upload') }}">PDF to Word</a>
                                 <a class="dropdown-item" href="{{ url('/word-to-pdf') }}">Word to PDF</a>
 
                             </div>
