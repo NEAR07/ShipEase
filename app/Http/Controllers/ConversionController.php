@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConversionController extends Controller
 {
@@ -25,6 +28,6 @@ class ConversionController extends Controller
         $process = new Process(['python', base_path('scripts/convert.py'), $pdfFile->getRealPath(), $outputPath]);
         $process->run();
 
-        return response()->json(['message' => 'File converted successfully', 'outputFile' => $outputFile]);
+        return response()->download($outputPath)->deleteFileAfterSend(true);
     }
 }
