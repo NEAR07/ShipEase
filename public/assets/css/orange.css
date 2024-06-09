@@ -287,6 +287,13 @@ select {
     text-transform: none;
 }
 
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+}
+
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
@@ -299,6 +306,13 @@ input[type="radio"],
 input[type="checkbox"] {
     box-sizing: border-box;
     padding: 0;
+}
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"] {
+    -webkit-appearance: listbox;
 }
 
 textarea {
@@ -332,6 +346,11 @@ progress {
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
     height: auto;
+}
+
+[type="search"] {
+    outline-offset: -2px;
+    -webkit-appearance: none;
 }
 
 [type="search"]::-webkit-search-cancel-button,
@@ -3426,9 +3445,6 @@ input[type="button"].btn-block {
 .input-group > .custom-select:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border: 1.5px solid;
-    padding-top: 0px;
-    padding-bottom: 0px;
 }
 .input-group > .form-control:not(:first-child),
 .input-group > .custom-select:not(:first-child) {
@@ -3479,7 +3495,6 @@ input[type="button"].btn-block {
 
 .input-group-append {
     margin-left: -2px;
-    margin-top: 0.3px;
 }
 
 .input-group-text {
@@ -3959,7 +3974,7 @@ input[type="button"].btn-block {
     align-items: center;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: 18px 24px;
+    padding: 1.5rem 1.25rem;
 }
 .navbar > .container,
 .navbar > .container-fluid {
@@ -5272,6 +5287,13 @@ input[type="button"].btn-block {
 }
 .close:not(:disabled):not(.disabled) {
     cursor: pointer;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
 }
 
 .modal-open {
@@ -10361,5 +10383,31 @@ footer h5 {
 @media screen and (max-width: 768px) {
     .switcher-wrap {
         display: none;
+    }
+}
+
+/* Guideline box */
+.guideline-box {
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border for a glass effect */
+    border-radius: 0.25rem;
+    padding: 15px;
+    background-color: rgba(11, 10, 10, 0.5); /* Dark transparent background */
+    margin-top: 52px;
+    backdrop-filter: blur(10px); /* Glassy blur effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.guideline-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.guideline-step {
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .guideline-box {
+        margin-bottom: 20px;
     }
 }

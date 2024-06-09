@@ -158,26 +158,31 @@
             </div>
             <div class="row mt-5">
                 <div class="col-md-4">
-                    <div class="product-card text-center bg-dark">
-                        <i class="fas fa-qrcode fa-3x mb-3 premium"></i>
-                        <h2 class="product-name">QR Code Generator</h2>
-                        <p class="product-description">Generate QR codes and save as SVGs.</p>
-                    </div>
+                    <a href="{{ url('/upload') }}">
+                        <div class="product-card text-center bg-dark">
+                            <i class="fa-regular fa-file-pdf fa-3x mb-3 premium"></i>
+                            <h2 class="product-name">PDF Converter</h2>
+                            <p class="product-description">Solve your PDF problems.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-4">
-                    <div class="product-card text-center bg-dark">
-                        <i class="fa-regular fa-image fa-3x mb-3 premium"></i>
-                        <h2 class="product-name">Image Analysis</h2>
-                        <p class="product-description">Use AI to talk to pictures.</p>
-                    </div>
+                    <a href="{{ url('/image') }}">
+                        <div class="product-card text-center bg-dark">
+                            <i class="fa-regular fa-image fa-3x mb-3 premium"></i>
+                            <h2 class="product-name">Image Analysis</h2>
+                            <p class="product-description">Use AI to talk to pictures.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-4">
-                    <div class="product-card text-center bg-dark">
-                        <i class="fa-regular fa-file-pdf fa-3x mb-3 premium"></i>
-                        <h2 class="product-name">PDF Converter</h2>
-                        <p class="product-description">Solve your PDF problems.
-                        </p>
-                    </div>
+                    <a href="{{ url('/qr-code') }}">
+                        <div class="product-card text-center bg-dark">
+                            <i class="fas fa-qrcode fa-3x mb-3 premium"></i>
+                            <h2 class="product-name">QR Code Generator</h2>
+                            <p class="product-description">Generate QR codes and save as SVGs.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

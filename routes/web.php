@@ -7,6 +7,7 @@ use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\URLShortenerController;
 use App\Http\Controllers\ConversionController;
+use App\Http\Controllers\DownloadController;
 
 //Home
 Route::get('/', function () {

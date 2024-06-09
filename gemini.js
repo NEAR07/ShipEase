@@ -64,9 +64,6 @@ app.get("/config", (req, res) => {
             throw new Error("API_KEY is not set.");
         }
 
-        // Log a masked or generic message instead of the actual API key
-        console.log("API_KEY: ****");
-
         res.json({ success: true, message: "API success" });
     } catch (error) {
         console.error("Error in /config endpoint:", error);

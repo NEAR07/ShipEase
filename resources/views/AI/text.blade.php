@@ -2,6 +2,11 @@
 <title>AI Text Generator</title>
 @section('content')
     <style>
+        body {
+            background-image: url("{{ asset('assets/img/bg4.jpeg') }}");
+            background-size: cover;
+        }
+
         #prompt {
             margin-bottom: 10px;
         }
@@ -28,23 +33,42 @@
         }
 
         #copy:hover {
-            background-color: #1de9b6;
-            border-color: #1de9b6;
+            background-color: #fd7014;
+            border-color: #fd7014;
         }
     </style>
-    <div class="container mt-5">
-        <div class="row justify-content-center py-6">
-            <div class="col-md-6">
+    <div class="container mt-6 mb-5">
+        <div class="row">
+            <!-- Guideline box column -->
+            <div class="col-md-3">
+                <div class="guideline-box">
+                    <h4 class="guideline-title text-center">Steps to follow</h4>
+                    <ul class="list-unstyled">
+                        <li class="guideline-step"><span style="font-weight: bolder">1.</span> Enter your text in the first
+                            field.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">2.</span> Click the "Generate" button.
+                        </li>
+                        <li class="guideline-step"><span style="font-weight: bolder">3.</span> View the result in the
+                            textarea.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">4.</span> Click the "Copy" button to
+                            copy the result.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main content column -->
+            <div class="col-md-9">
                 <div class="position-relative">
                     <h3>Start Typing Here <i class="fa-solid fa-arrow-turn-down down"></i></h3>
-                    <input id="prompt" class="form-control" type="text" placeholder="What's on your mind today?">
+                    <input id="prompt" style="color: #2d2d2d" class="form-control" type="text"
+                        placeholder="What's on your mind today?">
                     <button id="generate" class="btn btn-primary mt-2"><i class="fa-solid fa-gear"></i> Generate</button>
                     <button id="copy" class="btn btn-secondary mt-2 float-right" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Copy to clipboard">
                         📋
                     </button>
                     <div id="loader"></div>
-                    <textarea id="result" class="form-control mt-2" readonly></textarea>
+                    <textarea id="result" class="form-control mt-2" style="color: #2d2d2d" readonly></textarea>
                 </div>
             </div>
         </div>
@@ -99,6 +123,7 @@
                 loader.style.display = "none";
             }
         }
+
 
         document.getElementById("generate").addEventListener("click", runModel);
 

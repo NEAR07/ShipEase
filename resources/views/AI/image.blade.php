@@ -2,6 +2,11 @@
 <title>AI Image-to-Text</title>
 @section('content')
     <style>
+        body {
+            background-image: url("{{ asset('assets/img/bg4.jpeg') }}");
+            background-size: cover;
+        }
+
         #loader {
             display: none;
             height: 20px;
@@ -10,27 +15,45 @@
     </style>
     <div class="container mt-5">
         <div class="row justify-content-center py-6">
+            <!-- Guideline box column -->
+            <div class="col-md-3">
+                <div class="guideline-box" style="margin-top:32px">
+                    <h4 class="guideline-title text-center">Steps to follow</h4>
+                    <ul class="list-unstyled">
+                        <li class="guideline-step"><span style="font-weight: bolder">1.</span> Click "Browse" and select an
+                            image.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">2.</span> Type your prompt in the field
+                            below.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">3.</span> Click the "Generate" button.
+                        </li>
+                        <li class="guideline-step"><span style="font-weight: bolder">4.</span> Wait for the processing and
+                            see the result.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Form and feedback column -->
             <div class="col-md-6">
                 <form id="imageForm" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="imageInput" class="form-label">Upload an image:</label>
+                        <label for="imageInput" class="form-label" style="font-weight: bold">Upload an image:</label>
                         <input type="file" accept="image/*" class="form-control" id="imageInput" required>
                     </div>
                     <div class="mb-3">
-                        <label for="promptInput" class="form-label">Type your prompt:</label>
+                        <label for="promptInput" class="form-label" style="font-weight: bold">Enter your prompt:</label>
                         <input type="text" class="form-control" id="promptInput" name="prompt"
-                            placeholder="Ex: Describe this image" required>
+                            placeholder="e.g., Describe this image" style="color: #2d2d2d" required>
                     </div>
                     <button type="button" class="btn btn-primary" onclick="generateContent()">
                         <i class="fa-solid fa-gear"></i> Generate
                     </button>
                 </form>
 
-                <div id="loader">
+                <div id="loader" class="mt-3" style="font-weight: bold">
                     Processing...
                 </div>
 
-                <div id="feedback"></div>
+                <div id="feedback" class="mt-3" style="font-weight: bold"></div>
             </div>
         </div>
     </div>

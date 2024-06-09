@@ -1,13 +1,48 @@
 @extends('layouts.app')
 <title>QR Code Maker</title>
 @section('content')
-    <form action="/generate-qr-code" method="GET" class="mt-7">
-        <div class="input-group mb-3">
-            <input type="text" name="url" class="form-control" placeholder="Enter URL" aria-label="Enter URL"
-                aria-describedby="generate-button">
-            <button class="btn btn-primary" type="submit" id="generate-button">Generate QR Code</button>
+    <style>
+        body {
+            background-image: url("{{ asset('assets/img/bg2.jpeg') }}");
+            background-size: cover;
+        }
+    </style>
+    <div class="container mt-4">
+        <div class="row justify-content-center py-6">
+            <!-- Guideline box column -->
+            <div class="col-md-3">
+                <div class="guideline-box">
+                    <h4 class="guideline-title text-center">Steps to follow</h4>
+                    <ul class="list-unstyled">
+                        <li class="guideline-step"><span style="font-weight: bolder">1.</span> Enter the url
+                            you want to
+                            convert into a QR code.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">2.</span> Click the "Generate QR Code"
+                            button.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">3.</span> The QR Code will be generated
+                            and automatically downloaded.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Barcode form column -->
+            <div class="col-md-6">
+                <div class="panel-heading mt-5">
+                    <h2 class="text-center">QR Code Generator</h2>
+                </div>
+                <form action="/generate-qr-code" method="GET" class="mt-4">
+                    <label for="promptInput" class="form-label" style="font-weight: bold">Enter destination URL:</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="url" class="form-control" placeholder="e.g., www.xyz.com"
+                            aria-label="Enter URL" aria-describedby="generate-button">
+                        <button class="btn btn-primary" type="submit" id="generate-button"
+                            style="border-radius: 0 5px 5px 0;">Generate QR Code <i class="fa-solid fa-qrcode"></i></button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
+
 
 
     <script>

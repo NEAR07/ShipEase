@@ -102,8 +102,8 @@
                                 Files
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
-                                <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
                                 <a class="dropdown-item" href="{{ url('/upload') }}">PDF to Word</a>
+                                <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
                                 <a class="dropdown-item" href="{{ url('/word-to-pdf') }}">Word to PDF</a>
 
                             </div>
@@ -166,19 +166,20 @@
                     <ul class="list-unstyled">
                         <li><a href="{{ url('/') }}">Home</a></li>
                         <li><a href="{{ url('/') }}#about">About</a></li>
+                        <li><a href="{{ url('/all-tools') }}">Tools</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
                     <h5>AI Tools</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/text') }}">AI Text Generator</a></li>
-                        <li><a href="{{ url('/image') }}">AI Image Analysis</a></li>
+                        <li><a href="{{ url('/text') }}">Text Generator</a></li>
+                        <li><a href="{{ url('/image') }}">Image Analysis</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
                     <h5>Other Tools</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/pdf-to-text') }}">PDF to Text</a></li>
+                        <li><a href="{{ url('/upload') }}">PDF to Word</a></li>
                         <li><a href="{{ url('/qr-code') }}">QR Code Maker</a></li>
                         <li><a href="{{ url('/all-tools') }}">More tools</a></li>
                     </ul>

@@ -28,6 +28,13 @@ class ConversionController extends Controller
         $process = new Process(['python', base_path('scripts/convert.py'), $pdfFile->getRealPath(), $outputPath]);
         $process->run();
 
+        if (!$process->isSuccessful()) {
+            \Log::error('Process failed', ['output' => $process->getErrorOutput()]);
+            throw new ProcessFailedException($process);
+        }
+
+        \Log::info('Process successful', ['output' => $process->getOutput()]);
+
         return response()->download($outputPath)->deleteFileAfterSend(true);
     }
 }

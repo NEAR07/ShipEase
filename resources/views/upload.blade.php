@@ -1,22 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
+<title>Convert PDF</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@section('content')
+    <style>
+        body {
+            background-image: url("{{ asset('assets/img/bg3.jpeg') }}");
+            background-size: cover;
+        }
+    </style>
+    <div class="container mt-4">
+        <div class="row justify-content-center py-6">
+            <!-- Guideline box column -->
+            <div class="col-md-4">
+                <div class="guideline-box">
+                    <h4 class="guideline-title text-center">Steps to follow</h4>
+                    <ul class="list-unstyled">
+                        <li class="guideline-step"><span style="font-weight: bolder">1.</span> Choose a PDF file by clicking
+                            the "Browse" button.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">2.</span> Click the "Convert" button to
+                            start the conversion process.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">3.</span> Wait for the conversion to
+                            complete.</li>
+                        <li class="guideline-step"><span style="font-weight: bolder">4.</span> Once completed, the
+                            converted Word file will be automatically downloaded.</li>
+                    </ul>
+                </div>
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>PDF to DOCX Converter</title>
-</head>
+            <!-- Main content column -->
+            <div class="col-md-6">
+                <div class="panel-heading mt-5">
+                    <h2 class="text-center">Convert PDF file to Word</h2>
+                </div>
+                <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/convert">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="inputFile" class="form-label" style="font-weight: bold">Upload PDF File:</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".pdf" required>
+                    </div>
 
-<body>
-    <h2>PDF to DOCX Converter</h2>
-    <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/convert">
-        @csrf
-        <label for="file">Choose a PDF file:</label>
-        <input type="file" id="file" name="file" accept=".pdf" required>
-        <button type="submit">Convert</button>
-    </form>
-    <div id="message"></div>
+                    <div class="mb-3 text-center">
+                        <button type="submit" class="btn btn-primary">Convert <i class="fa-solid fa-file"></i></button>
+                    </div>
+                </form>
+                <div id="message" style="font-weight:bold"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.getElementById('uploadForm').addEventListener('submit', function(event) {
@@ -48,7 +78,7 @@
                     a.click();
                     window.URL.revokeObjectURL(url);
                     document.getElementById('message').innerText =
-                    'File converted successfully and downloaded.';
+                        'File converted successfully and downloaded.';
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -56,6 +86,4 @@
                 });
         });
     </script>
-</body>
-
-</html>
+@endsection
