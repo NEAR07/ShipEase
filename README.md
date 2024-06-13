@@ -23,5 +23,5 @@
 9. Run the "gemini.js" server by `npm start` command from terminal or using VS Code's run feature. You will also need to install all the necessary dependencies. See "package.json" file for those
 10. Run the command `php artisan serve` from the project root and visit `localhost:8000` to access the application
 
-<h3>For PDF to Word converter you will need to have Python installed</h3>
+<h4>Note: For PDF to Word converter you will need to have Python installed</h4>
  
