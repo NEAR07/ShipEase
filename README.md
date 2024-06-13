@@ -24,4 +24,8 @@
 10. Run the command `php artisan serve` from the project root and visit `localhost:8000` to access the application
 
 <h4>Note: For PDF to Word converter you will need to have Python installed</h4>
+
+# Installation
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
  
