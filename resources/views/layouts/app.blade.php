@@ -81,7 +81,7 @@
         <div class="container-fluid">
             <nav class="navbar navbar-expand-md navbar-dark">
                 <a class="navbar-brand heading-black" href="{{ url('/') }}">
-                    <img src="{{ asset('assets/img/logo2.png') }}" alt="Logo" class="logo">
+                    <img src="{{ asset('assets/img/logo2c.png') }}" alt="Logo" class="logo">
                 </a>
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
                     data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
@@ -90,7 +90,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link page-scroll" href="{{ url('/text') }}">AI Writing</a>
                         </li>
                         <li class="nav-item">
@@ -119,7 +119,7 @@
                                 <a class="dropdown-item" href="{{ url('/barcode') }}">Barcode Maker</a>
 
                             </div>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link page-scroll d-flex flex-row align-items-center text-primary"
                                 href="{{ url('/all-tools') }}">
@@ -142,11 +142,12 @@
     <footer class="py-4" id="footer">
         <div class="container">
             <div class="row">
-                <div class="col-sm-5 mr-auto">
-                    <h5>About ContentCraft</h5>
+                <!-- <div class="col-sm-5 mr-auto"> -->
+                <div class="col-sm-10 mr-auto">
+                    <h5>About ShipEase</h5>
                     <p class="text-muted">We provide a library of handy tools to help you solve problems of all types.
                         All files are deleted right after processing.</p>
-                    <ul class="list-inline social social-sm">
+                    <!-- <ul class="list-inline social social-sm">
                         <li class="list-inline-item">
                             <a href="#"><i class="fa-brands fa-facebook"></i></a>
                         </li>
@@ -159,9 +160,9 @@
                         <li class="list-inline-item">
                             <a href="#"><i class="fa-brands fa-google-plus"></i></a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
-                <div class="col-sm-2">
+                <!-- <div class="col-sm-2">
                     <h5>Navigate</h5>
                     <ul class="list-unstyled">
                         <li><a href="{{ url('/') }}">Home</a></li>
@@ -183,11 +184,11 @@
                         <li><a href="{{ url('/qr-code') }}">QR Code Maker</a></li>
                         <li><a href="{{ url('/all-tools') }}">More tools</a></li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <div class="row mt-5">
                 <div class="col-12 text-muted text-center small-xl">
-                    &copy; 2024 ContentCraft - All Rights Reserved
+                    &copy; 2025 ShipEase - All Rights Reserved
                 </div>
             </div>
         </div>

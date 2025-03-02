@@ -6,7 +6,7 @@
         }
 
         .bg-hero {
-            background-image: url("{{ asset('assets/img/hero.jpg') }}");
+            background-image: url("{{ asset('assets/img/bgsh.jpg') }}");
         }
 
         #features {
@@ -148,16 +148,16 @@
     </section>
 
     <!--Premium section-->
-    <section class="py-7 section-angle top-right bottom-left" id="premium">
-        <div class="container overlay">
-            <div class="row">
+    <section class="py-7 section-angle  bottom-left" id="premium">
+        <!-- <div class="container overlay"> -->
+            <!-- <div class="row">
                 <div class="col-md-6 mx-auto text-center">
                     <h2 class="heading-black">Premium Tools For Free!</h2>
                     <p class="text-muted lead">Things you would usually pay for.</p>
                 </div>
-            </div>
-            <div class="row mt-5">
-                <div class="col-md-4">
+            </div> -->
+            <!-- <div class="row mt-5"> -->
+                <!-- <div class="col-md-4">
                     <a href="{{ url('/upload') }}">
                         <div class="product-card text-center bg-dark">
                             <i class="fa-regular fa-file-pdf fa-3x mb-3 premium"></i>
@@ -165,8 +165,8 @@
                             <p class="product-description">Solve your PDF problems.</p>
                         </div>
                     </a>
-                </div>
-                <div class="col-md-4">
+                </div> -->
+                <!-- <div class="col-md-4">
                     <a href="{{ url('/image') }}">
                         <div class="product-card text-center bg-dark">
                             <i class="fa-regular fa-image fa-3x mb-3 premium"></i>
@@ -174,8 +174,8 @@
                             <p class="product-description">Use AI to talk to pictures.</p>
                         </div>
                     </a>
-                </div>
-                <div class="col-md-4">
+                </div> -->
+                <!-- <div class="col-md-4">
                     <a href="{{ url('/qr-code') }}">
                         <div class="product-card text-center bg-dark">
                             <i class="fas fa-qrcode fa-3x mb-3 premium"></i>
@@ -183,9 +183,9 @@
                             <p class="product-description">Generate QR codes and save as SVGs.</p>
                         </div>
                     </a>
-                </div>
-            </div>
-        </div>
+                </div> -->
+            <!-- </div> -->
+        <!-- </div> -->
     </section>
 
     <!--About section-->
@@ -193,7 +193,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-7 mx-auto text-center">
-                    <h2 class="text-primary">What ContentCraft offers?</h2>
+                    <h2 class="text-primary">What ShipEase offers?</h2>
                     <p class="text-muted lead">Tools to make your life easier.</p>
                 </div>
             </div>
