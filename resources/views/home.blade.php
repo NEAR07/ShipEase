@@ -90,29 +90,20 @@
                         <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
-                                    <span data-feather="edit-3" width="35" height="35"></span>
+                                    <span data-feather="file-text" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Content Writing</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <h5>Data Automation</h5>
+                            <p class="text-muted text-justify">Speed up data manipulation processes such as PDF to Excel conversion, CADMatic data extraction, and e-ticket numbering automatically.</p>
                         </div>
                         <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
-                                    <span data-feather="type" width="35" height="35"></span>
+                                    <span data-feather="layout" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Grammar Checking</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                        <div class="col-md-4 pt-0 box">
-                            <div class="icon-box box-primary">
-                                <div class="icon-box-inner">
-                                    <span data-feather="align-justify" width="35" height="35"></span>
-                                </div>
-                            </div>
-                            <h5>Text Summarization</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <h5>Data Comparison</h5>
+                            <p class="text-muted text-justify">Automatically compare pre- and post-revision data to identify changes quickly and accurately.</p>
                         </div>
                         <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
@@ -121,7 +112,16 @@
                                 </div>
                             </div>
                             <h5>Code Generation</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p class="text-muted text-justify">Generate AutoLISP scripts to speed up drawing creation in ZWCAD and simplify repetitive tasks with automated programming.</p>
+                        </div>
+                        <div class="col-md-4 pt-0 box">
+                            <div class="icon-box box-primary">
+                                <div class="icon-box-inner">
+                                    <span data-feather="align-justify" width="35" height="35"></span>
+                                </div>
+                            </div>
+                            <h5>CAD Integration</h5>
+                            <p class="text-muted text-justify">Connects data from CADMatic to Excel, allowing users to manage and analyze technical data more easily.</p>
                         </div>
                         <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
@@ -129,17 +129,17 @@
                                     <span data-feather="image" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Image Description</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <h5>Design Optimization</h5>
+                            <p class="text-muted text-justify">Simplify the sketching and documentation process with the profile resume feature in one block, improving work order and efficiency.</p>
                         </div>
                         <div class="col-md-4 pt-0 box">
                             <div class="icon-box box-primary">
                                 <div class="icon-box-inner">
-                                    <span data-feather="layout" width="35" height="35"></span>
+                                    <span data-feather="user-check" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Picture Based Content</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <h5>User-Friendly</h5>
+                            <p class="text-muted text-justify">Designed to increase productivity with automated features that reduce manual work, improve accuracy, and save time.</p>
                         </div>
                     </div>
                 </div>
