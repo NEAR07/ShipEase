@@ -8,11 +8,34 @@ use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\URLShortenerController;
 use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PdfNumberingController;
+use App\Http\Controllers\PartlistConverterController;
+
 
 //Home
 Route::get('/', function () {
     return view('home');
 });
+
+//PDF Merge
+Route::post('/merge-pdfs', [PdfController::class, 'merge'])->name('merge.pdfs');
+Route::get('/merge_pdf', function () {
+    return view('Multimedia.merge_pdf');
+});
+
+// PDF Numbering
+Route::post('/number-pdf', [PdfNumberingController::class, 'number'])->name('number.pdf');
+Route::get('/number-pdf', function () {
+    return view('Multimedia.number');
+});
+
+// partlist
+Route::post('/lan', [PartlistConverterController::class, 'convert'])->name('partlist.convert');
+Route::get('/partlistConverter', function () {
+    return view('Multimedia.partlistConverter');
+});
+
 
 //AI module
 Route::get('/text', function () {

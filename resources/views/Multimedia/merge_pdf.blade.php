@@ -2,6 +2,11 @@
 <title>PDF Merger</title>
 @section('content')
 <style>
+    body {
+        background-image: url("{{ asset('assets/img/bg3.jpeg') }}");
+        background-size: cover;
+        font-family: Arial, sans-serif;
+    }
     .file-input {
         margin: 20px 0;
     }

@@ -37,7 +37,7 @@
     <div class="container mt-6">
         <div class="row py-6">
             <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{{ url('/text') }}" class="card-link">
+                <a href="{{ url('/merge_pdf') }}" class="card-link">
                     <div class="card">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -45,16 +45,16 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Content Generator</h4>
-                                    <span class="badge badge-info">AI Tool</span>
-                                    <p>Use AI to write content for you</p>
+                                    <h4>Merge and Manage <br>Your PDF</h4>
+                                    <span class="badge badge-info">File tool</span>
+                                    <p>Merger your PDF</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col-md-6 col-lg-4 mb-4">
+            <!-- <div class="col-md-6 col-lg-4 mb-4">
                 <a href="{{ url('/text') }}" class="card-link">
                     <div class="card">
                         <div class="card-body">
@@ -89,9 +89,9 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> -->
             <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{{ url('/upload') }}" class="card-link">
+                <a href="{{ url('/number-pdf') }}" class="card-link">
                     <div class="card">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -109,7 +109,7 @@
                 </a>
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{{ url('/pdf-to-text') }}" class="card-link">
+                <a href="{{ url('/partlistConverter') }}" class="card-link">
                     <div class="card">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -117,9 +117,9 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>PDF to Text <br>Converter</h4>
+                                    <h4>Convert Partlist <br>to Excel</h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Extract text from PDF file</p>
+                                    <p>Convert Data Cadmatic to Excel</p>
                                 </div>
                             </div>
                         </div>
