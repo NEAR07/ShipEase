@@ -148,7 +148,9 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, csv_file_path, output_fi
     wb = Workbook()
     ws = wb.active
 
+    # Header baris pertama
     ws.append(["PROJECT =", header_data["Object"], "BLOCK =", header_data["Block"], "DATE =", header_data["Date"], "", "", "", "", "", "RESUME"])
+    # Header baris kedua
     headers = [
         "PROFILE TYPE", "BAR-CODE", "LENGTH BAR", "MAT", "BAR NUMBER",
         "TOT LENGTH", "SCRAP IRON", "PART NAME", "Cut off Length", "", "",
@@ -156,23 +158,57 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, csv_file_path, output_fi
     ]
     ws.append(headers)
 
+    # Font tebal untuk header
     bold_font = Font(bold=True)
     for cell in ws[1] + ws[2]:
         cell.font = bold_font
 
     # Set lebar kolom
-    ws.column_dimensions['B'].width = 16
-    ws.column_dimensions['D'].width = 9
-    ws.column_dimensions['H'].width = 21
-    ws.column_dimensions['L'].width = 18
-    ws.column_dimensions['T'].width = 20
     ws.column_dimensions['A'].width = 15
-    for col in ['C', 'F', 'G']:
-        ws.column_dimensions[col].width = 12
-    for col in ['E', 'I']:
-        ws.column_dimensions[col].width = 13
-    for col in range(14, 17):
-        ws.column_dimensions[chr(64 + col)].width = 7
+    ws.column_dimensions['B'].width = 16
+    ws.column_dimensions['C'].width = 12
+    ws.column_dimensions['D'].width = 9
+    ws.column_dimensions['E'].width = 13
+    ws.column_dimensions['F'].width = 12
+    ws.column_dimensions['G'].width = 12
+    ws.column_dimensions['H'].width = 21
+    ws.column_dimensions['I'].width = 13
+    ws.column_dimensions['L'].width = 18
+    ws.column_dimensions['M'].width = 7
+    ws.column_dimensions['N'].width = 7
+    ws.column_dimensions['O'].width = 7
+    ws.column_dimensions['P'].width = 7
+    ws.column_dimensions['Q'].width = 7
+    ws.column_dimensions['R'].width = 7
+    ws.column_dimensions['S'].width = 7
+    ws.column_dimensions['T'].width = 20
+
+    # Set tinggi baris
+    ws.row_dimensions[2].height = 45.75  # Tinggi baris header kedua
+
+    # Fungsi untuk mengkonversi kolom numerik
+    def convert_to_number(ws, row):
+        columns_to_convert = [2, 3, 5, 6, 7, 9, 13, 14, 15, 16, 17, 19]  # Kolom yang akan dikonversi
+        for col in columns_to_convert:
+            cell = ws.cell(row=row, column=col)
+            if cell.value is not None:
+                try:
+                    cell.value = float(cell.value)
+                except ValueError:
+                    pass
+
+    # Fungsi untuk mengkonversi kolom barcode
+    def convert_to_number_barcode(ws, row):
+        columns_to_convert = [2]  # Kolom BAR-CODE
+        for col in columns_to_convert:
+            cell = ws.cell(row=row, column=col)
+            if cell.value is not None:
+                try:
+                    value_as_int = int(float(cell.value))
+                    cell.value = str(value_as_int)
+                    cell.number_format = '@'
+                except ValueError:
+                    pass
 
     # Isi data
     bcode_tracker = {key: 0 for key in lst_data}
@@ -185,6 +221,7 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, csv_file_path, output_fi
             part_value = lst_data[cut_off_length][index]
             bcode_tracker[cut_off_length] += 1
 
+        # Split profile type
         split_profile = split_profile_type(resume_data["Profile type resume"][i]) if i < len(resume_data["Profile type resume"]) else ['X', '0', 'X', '0', 'X', '0', 'X', '0']
         row = [
             data["Profile type"][i],
@@ -201,8 +238,106 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, csv_file_path, output_fi
         ] + split_profile + [resume_data["Bar number resume"][i] if i < len(resume_data["Bar number resume"]) else ""]
         ws.append(row)
 
+    # Set tinggi baris untuk data
+    for row in range(3, ws.max_row + 1):
+        ws.row_dimensions[row].height = 25
+
+    # Konversi kolom numerik
+    for row in range(3, ws.max_row + 1):
+        convert_to_number(ws, row)
+
+    # Cocokkan data CSV untuk kolom BAR-CODE
+    for excel_row in range(3, ws.max_row + 1):
+        excel_col_a = ws.cell(row=excel_row, column=1).value
+        excel_col_c = ws.cell(row=excel_row, column=3).value
+        excel_col_d = ws.cell(row=excel_row, column=4).value
+
+        excel_col_a_str = str(excel_col_a).strip() if excel_col_a is not None else ""
+        excel_col_d_str = str(excel_col_d).strip() if excel_col_d is not None else ""
+        excel_col_c_int = int(excel_col_c) if isinstance(excel_col_c, float) else excel_col_c
+        excel_col_c_str = str(excel_col_c_int).strip() if excel_col_c_int is not None else ""
+
+        for csv_row in csv_data:
+            if len(csv_row) < 4:
+                continue
+            # Konversi semua elemen CSV ke string sebelum strip
+            csv_col_b = str(csv_row[1]).strip()
+            csv_col_c = str(csv_row[2]).strip()
+            csv_col_d = str(csv_row[3]).strip()
+
+            if excel_col_a_str == csv_col_b and excel_col_c_str == csv_col_c and excel_col_d_str == csv_col_d:
+                ws.cell(row=excel_row, column=2).value = csv_row[0]
+                convert_to_number_barcode(ws, excel_row)
+                break
+
+    # Set alignment
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
+        for cell in row:
+            if 1 <= cell.column <= 9 or 12 <= cell.column <= 20:
+                cell.alignment = Alignment(horizontal='center', vertical='center')
+            if cell.column in [1, 8, 12]:
+                cell.alignment = Alignment(horizontal='left', vertical='center')
+
+    # Remove duplicate values in columns A to G
+    unique_rows = set()
+    for row in range(3, ws.max_row + 1):
+        row_data = tuple(ws.cell(row=row, column=col).value for col in range(1, 8))
+        if row_data in unique_rows:
+            for col in range(1, 8):
+                ws.cell(row=row, column=col).value = None
+        else:
+            unique_rows.add(row_data)
+
+    # Set borders
+    thin_border = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thin"),
+        bottom=Side(style="thin")
+    )
+    top_thick_border = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thick"),
+        bottom=Side(style="thin")
+    )
+    thick_border = Border(
+        left=Side(style="thick"),
+        right=Side(style="thick"),
+        top=Side(style="thick"),
+        bottom=Side(style="thick")
+    )
+
+    # Border untuk header baris kedua
+    for cell in ws[2]:
+        if 1 <= cell.column <= 9 or 12 <= cell.column <= 20:
+            cell.border = thick_border
+
+    # Border untuk data
+    for row in ws.iter_rows(min_row=3, max_row=ws.max_row):
+        if all(ws.cell(row=row[0].row, column=col).value not in [None, "", " "] for col in range(1, 10)):
+            for cell in row:
+                if 1 <= cell.column <= 9:
+                    cell.border = top_thick_border
+        else:
+            for cell in row:
+                if 1 <= cell.column <= 9 and cell.value not in [None, "", " "]:
+                    cell.border = thin_border
+
+    # Border untuk kolom 12-20 pada baris terakhir dengan data
+    last_row_with_data = 0
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=12, max_col=20):
+        if any(cell.value not in [None, "", " "] for cell in row):
+            last_row_with_data = row[0].row
+
+    if last_row_with_data > 0:
+        for cell in ws.iter_rows(min_row=2, max_row=last_row_with_data, min_col=12, max_col=20):
+            for sub_cell in cell:
+                sub_cell.border = thin_border
+
     # Simpan file Excel
     wb.save(output_file_path)
+    print(f"Excel file generated successfully at: {output_file_path}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:

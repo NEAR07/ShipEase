@@ -12,17 +12,18 @@
         margin-bottom: 50px;
     }
     .guideline-box {
-        background-color:rgb(0, 0, 0);
+        background-color: rgb(0, 0, 0);
         padding: 15px;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .guideline-title {
-        color:rgb(249, 249, 249);
+        color: rgb(249, 249, 249);
         font-weight: bold;
     }
     .guideline-step {
         margin: 10px 0;
+        color: #fff;
     }
     .file-input {
         margin: 15px 0;
@@ -74,6 +75,9 @@
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    .form-label {
+        color: #fff;
+    }
 </style>
 
 <div class="container">
@@ -92,12 +96,12 @@
 
         <div class="col-md-9">
             <div class="form-container">
-                <h3>Convert Partlist to Excel</h3>
+                <h3 style="color: #fff;">Convert Partlist to Excel</h3>
                 <form id="convert-form" action="{{ route('partlist.convert') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="file-input">
-                        <label for="listFile" class="form-label" style="font-weight: bold">Upload .list File:</label>
+                        <label for="listFile" class="form-label">Upload .list File:</label>
                         <input type="file" name="list" id="listFile" class="form-control" accept=".list" required>
                         @error('list')
                             <span class="text-danger">{{ $message }}</span>
@@ -105,7 +109,7 @@
                     </div>
 
                     <div class="file-input">
-                        <label for="lstFile" class="form-label" style="font-weight: bold">Upload .lst File:</label>
+                        <label for="lstFile" class="form-label">Upload .lst File:</label>
                         <input type="file" name="lst" id="lstFile" class="form-control" accept=".lst" required>
                         @error('lst')
                             <span class="text-danger">{{ $message }}</span>
@@ -113,7 +117,7 @@
                     </div>
 
                     <div class="file-input">
-                        <label for="csvFile" class="form-label" style="font-weight: bold">Upload .csv File:</label>
+                        <label for="csvFile" class="form-label">Upload .csv File:</label>
                         <input type="file" name="csv" id="csvFile" class="form-control" accept=".csv" required>
                         @error('csv')
                             <span class="text-danger">{{ $message }}</span>
@@ -123,7 +127,7 @@
                     <div id="file-list"></div>
 
                     <div class="file-input">
-                        <label for="outputFile" class="form-label" style="font-weight: bold">Output .xlsx File Name:</label>
+                        <label for="outputFile" class="form-label">Output .xlsx File Name:</label>
                         <input type="text" name="output" id="outputFile" class="form-control" placeholder="e.g., output.xlsx" required>
                         @error('output')
                             <span class="text-danger">{{ $message }}</span>
@@ -159,19 +163,17 @@
         };
         let files = {};
 
-        Object.keys(inputs).forEach(type => {
-            inputs[type].addEventListener('change', () => {
-                if (inputs[type].files.length > 0) {
-                    files[type] = inputs[type].files[0];
-                    updateFileList();
-                }
-            });
-        });
+        // Validasi semua input dan aktifkan tombol Convert
+        function validateForm() {
+            const outputFileName = document.getElementById('outputFile').value.trim();
+            const allFilesSelected = Object.keys(files).length === 3;
+            const validOutput = outputFileName.endsWith('.xlsx') && outputFileName.length > 5;
+            convertBtn.disabled = !(allFilesSelected && validOutput);
+        }
 
+        // Update daftar file yang diunggah
         function updateFileList() {
             fileList.innerHTML = '';
-            let allFilesSelected = true;
-
             ['list', 'lst', 'csv'].forEach((type, index) => {
                 if (files[type]) {
                     const div = document.createElement('div');
@@ -184,14 +186,22 @@
                         </button>
                     `;
                     fileList.appendChild(div);
-                } else {
-                    allFilesSelected = false;
                 }
             });
-
-            convertBtn.disabled = !allFilesSelected;
+            validateForm();
         }
 
+        // Event listener untuk input file
+        Object.keys(inputs).forEach(type => {
+            inputs[type].addEventListener('change', () => {
+                if (inputs[type].files.length > 0) {
+                    files[type] = inputs[type].files[0];
+                    updateFileList();
+                }
+            });
+        });
+
+        // Event listener untuk menghapus file
         fileList.addEventListener('click', (e) => {
             const btn = e.target.closest('.remove-btn');
             if (btn) {
@@ -202,25 +212,20 @@
             }
         });
 
+        // Validasi nama file output saat diketik
+        document.getElementById('outputFile').addEventListener('input', validateForm);
+
+        // Submit form
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            if (Object.keys(files).length !== 3) {
-                resultDiv.innerHTML = `<div class="alert alert-warning">Please upload all required files (.list, .lst, .csv)</div>`;
-                return;
-            }
-
-            const outputFileName = document.getElementById('outputFile').value;
+            const outputFileName = document.getElementById('outputFile').value.trim();
             if (!outputFileName.endsWith('.xlsx')) {
                 resultDiv.innerHTML = `<div class="alert alert-warning">Output file name must end with .xlsx</div>`;
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('list', files['list']);
-            formData.append('lst', files['lst']);
-            formData.append('csv', files['csv']);
-            formData.append('output', outputFileName);
+            const formData = new FormData(form);
 
             try {
                 convertBtn.disabled = true;
@@ -228,28 +233,37 @@
                 progressBar.style.display = 'block';
                 progress.style.width = '0%';
 
+                // Simulasi progress (opsional, bisa diganti dengan polling jika backend mendukung)
+                let progressWidth = 0;
+                const progressInterval = setInterval(() => {
+                    progressWidth += 20;
+                    progress.style.width = `${Math.min(progressWidth, 80)}%`;
+                }, 500);
+
                 const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/octet-stream'
-                    },
-                    body: formData
-                });
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        },
+        body: formData
+            });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Conversion failed');
-                }
+            clearInterval(progressInterval);
+            progress.style.width = '100%';
 
-                progress.style.width = '100%';
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                resultDiv.innerHTML = `
-                    <a href="${url}" class="btn btn-success" download="${outputFileName}">
-                        <i class="fas fa-download"></i> Download Excel File
-                    </a>
-                `;
+            if (!response.ok) {
+                const errorData = await response.json();
+                document.getElementById('debug-info').innerHTML = `Debug Info: ${JSON.stringify(errorData)}`;
+                throw new Error(errorData.message || 'Conversion failed');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            resultDiv.innerHTML = `
+                <a href="${url}" class="btn btn-success" download="${outputFileName}">
+                    <i class="fas fa-download"></i> Download Excel File
+                </a>
+            `;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
             } finally {
