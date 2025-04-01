@@ -5,23 +5,34 @@ import re
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, Border, Side, Alignment
+import logging
 
 # Fungsi process_file (dari kode sebelumnya)
+# Setup logging
+logging.basicConfig(filename='partlist_converter.log', level=logging.DEBUG, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
 def process_file(file_path):
+    logging.info(f"Processing file: {file_path}")
     profile_types = []
     bar_numbers = []
-
-    with open(file_path, 'r') as file:
-        current_profile = None
-        for line in file:
-            line = line.replace('|', '').strip()
-            profile_match = re.search(r"Profile type\s*:\s*(\S+)", line)
-            if profile_match:
-                current_profile = profile_match.group(1)
-            bar_number_match = re.search(r"Bar number\s*:\s*(\d+)", line)
-            if bar_number_match and current_profile:
-                profile_types.append(current_profile)
-                bar_numbers.append(int(bar_number_match.group(1)))
+    try:
+        with open(file_path, 'r') as file:
+            current_profile = None
+            for line in file:
+                line = line.replace('|', '').strip()
+                profile_match = re.search(r"Profile type\s*:\s*(\S+)", line)
+                if profile_match:
+                    current_profile = profile_match.group(1)
+                    logging.debug(f"Found profile type: {current_profile}")
+                bar_number_match = re.search(r"Bar number\s*:\s*(\d+)", line)
+                if bar_number_match and current_profile:
+                    profile_types.append(current_profile)
+                    bar_numbers.append(int(bar_number_match.group(1)))
+                    logging.debug(f"Found bar number: {bar_number_match.group(1)}")
+    except Exception as e:
+        logging.error(f"Error processing file {file_path}: {str(e)}")
+        raise
 
     profile_summary = {}
     for profile, bar in zip(profile_types, bar_numbers):
@@ -39,6 +50,7 @@ def process_file(file_path):
         "Profile type resume": profile_type_resumes,
         "Bar number resume": bar_number_resumes
     })
+    logging.info("Processed file into DataFrame successfully")
     return df
 
 # Fungsi split_profile_type (dari kode sebelumnya)
@@ -136,73 +148,75 @@ def parse_lst_file(lst_file_path):
 
 # Fungsi untuk memproses dan menggabungkan data ke Excel
 def convert_list_to_xlsx(list_file_path, lst_file_path, csv_file_path, output_file_path):
-    # Proses file .list untuk resume
-    resume_data = process_file(list_file_path)
-    # Parse file .list untuk data utama
-    data, header_data = parse_list_file(list_file_path)
-    # Parse file .lst
-    lst_data = parse_lst_file(lst_file_path)
-    # Load file .csv
-    csv_data = pd.read_csv(csv_file_path, delimiter=';', quotechar='"').values.tolist()
+    logging.info(f"Starting conversion: {list_file_path}, {lst_file_path}, {csv_file_path} -> {output_file_path}")
+    try:
+        resume_data = process_file(list_file_path)
+        data, header_data = parse_list_file(list_file_path)
+        lst_data = parse_lst_file(lst_file_path)
+        csv_data = pd.read_csv(csv_file_path, delimiter=';', quotechar='"').values.tolist()
+        logging.info("All input files parsed successfully")
 
-    wb = Workbook()
-    ws = wb.active
+        wb = Workbook()
+        ws = wb.active
+        ws.append(["PROJECT =", header_data["Object"], "BLOCK =", header_data["Block"], "DATE =", header_data["Date"], "", "", "", "", "", "RESUME"])
+        headers = [
+            "PROFILE TYPE", "BAR-CODE", "LENGTH BAR", "MAT", "BAR NUMBER",
+            "TOT LENGTH", "SCRAP IRON", "PART NAME", "Cut off Length", "", "",
+            "Profile Type", "Height", "", "Width", "", "Thick1", "", "Thick2", "Bar number resume"
+        ]
+        ws.append(headers)
+        logging.debug("Excel headers written")
 
-    ws.append(["PROJECT =", header_data["Object"], "BLOCK =", header_data["Block"], "DATE =", header_data["Date"], "", "", "", "", "", "RESUME"])
-    headers = [
-        "PROFILE TYPE", "BAR-CODE", "LENGTH BAR", "MAT", "BAR NUMBER",
-        "TOT LENGTH", "SCRAP IRON", "PART NAME", "Cut off Length", "", "",
-        "Profile Type", "Height", "", "Width", "", "Thick1", "", "Thick2", "Bar number resume"
-    ]
-    ws.append(headers)
+        bold_font = Font(bold=True)
+        for cell in ws[1] + ws[2]:
+            cell.font = bold_font
 
-    bold_font = Font(bold=True)
-    for cell in ws[1] + ws[2]:
-        cell.font = bold_font
+        # Set lebar kolom
+        ws.column_dimensions['B'].width = 16
+        ws.column_dimensions['D'].width = 9
+        ws.column_dimensions['H'].width = 21
+        ws.column_dimensions['L'].width = 18
+        ws.column_dimensions['T'].width = 20
+        ws.column_dimensions['A'].width = 15
+        for col in ['C', 'F', 'G']:
+            ws.column_dimensions[col].width = 12
+        for col in ['E', 'I']:
+            ws.column_dimensions[col].width = 13
+        for col in range(14, 17):
+            ws.column_dimensions[chr(64 + col)].width = 7
 
-    # Set lebar kolom
-    ws.column_dimensions['B'].width = 16
-    ws.column_dimensions['D'].width = 9
-    ws.column_dimensions['H'].width = 21
-    ws.column_dimensions['L'].width = 18
-    ws.column_dimensions['T'].width = 20
-    ws.column_dimensions['A'].width = 15
-    for col in ['C', 'F', 'G']:
-        ws.column_dimensions[col].width = 12
-    for col in ['E', 'I']:
-        ws.column_dimensions[col].width = 13
-    for col in range(14, 17):
-        ws.column_dimensions[chr(64 + col)].width = 7
+        # Isi data
+        bcode_tracker = {key: 0 for key in lst_data}
+        for i in range(len(data["Part"])):
+            part_value = data["Part"][i]
+            cut_off_length = data["Cut off Length"][i]
 
-    # Isi data
-    bcode_tracker = {key: 0 for key in lst_data}
-    for i in range(len(data["Part"])):
-        part_value = data["Part"][i]
-        cut_off_length = data["Cut off Length"][i]
+            if cut_off_length in lst_data:
+                index = bcode_tracker[cut_off_length] % len(lst_data[cut_off_length])
+                part_value = lst_data[cut_off_length][index]
+                bcode_tracker[cut_off_length] += 1
 
-        if cut_off_length in lst_data:
-            index = bcode_tracker[cut_off_length] % len(lst_data[cut_off_length])
-            part_value = lst_data[cut_off_length][index]
-            bcode_tracker[cut_off_length] += 1
+            split_profile = split_profile_type(resume_data["Profile type resume"][i]) if i < len(resume_data["Profile type resume"]) else ['X', '0', 'X', '0', 'X', '0', 'X', '0']
+            row = [
+                data["Profile type"][i],
+                data["Bar-codenr"][i],
+                data["Length bar"][i],
+                data["Material"][i],
+                data["Bar number"][i],
+                data["Total length"][i],
+                data["Scrap-iron"][i],
+                part_value,
+                cut_off_length,
+                "",
+                ""
+            ] + split_profile + [resume_data["Bar number resume"][i] if i < len(resume_data["Bar number resume"]) else ""]
+            ws.append(row)
 
-        split_profile = split_profile_type(resume_data["Profile type resume"][i]) if i < len(resume_data["Profile type resume"]) else ['X', '0', 'X', '0', 'X', '0', 'X', '0']
-        row = [
-            data["Profile type"][i],
-            data["Bar-codenr"][i],
-            data["Length bar"][i],
-            data["Material"][i],
-            data["Bar number"][i],
-            data["Total length"][i],
-            data["Scrap-iron"][i],
-            part_value,
-            cut_off_length,
-            "",
-            ""
-        ] + split_profile + [resume_data["Bar number resume"][i] if i < len(resume_data["Bar number resume"]) else ""]
-        ws.append(row)
-
-    # Simpan file Excel
-    wb.save(output_file_path)
+            wb.save(output_file_path)
+            logging.info(f"Excel file saved successfully at: {output_file_path}")
+    except Exception as e:
+        logging.error(f"Error during conversion: {str(e)}")
+        raise
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:

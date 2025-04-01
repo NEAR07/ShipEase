@@ -109,7 +109,7 @@
                 </a>
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{{ url('/partlistConverter') }}" class="card-link">
+                <a href="{{ url('/partlist-converter') }}" class="card-link">
                     <div class="card">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -120,6 +120,24 @@
                                     <h4>Convert Partlist <br>to Excel</h4>
                                     <span class="badge badge-info">File Tool</span>
                                     <p>Convert Data Cadmatic to Excel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <a href="{{ url('/partnameConverter') }}" class="card-link">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                </div>
+                                <div class="col">
+                                    <h4>Partname <br>Converter</h4>
+                                    <span class="badge badge-info">File Tool</span>
+                                    <p>Merge Partname Converter </p>
                                 </div>
                             </div>
                         </div>

@@ -205,6 +205,10 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            console.log('Form submitted');
+            console.log('Files:', files);
+            console.log('Output filename:', document.getElementById('outputFile').value);
+
             if (Object.keys(files).length !== 3) {
                 resultDiv.innerHTML = `<div class="alert alert-warning">Please upload all required files (.list, .lst, .csv)</div>`;
                 return;
@@ -223,44 +227,55 @@
             formData.append('output', outputFileName);
 
             try {
-                convertBtn.disabled = true;
-                convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
-                progressBar.style.display = 'block';
-                progress.style.width = '0%';
+        convertBtn.disabled = true;
+        convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
+        progressBar.style.display = 'block';
+        progress.style.width = '0%';
 
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/octet-stream'
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Conversion failed');
-                }
-
-                progress.style.width = '100%';
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                resultDiv.innerHTML = `
-                    <a href="${url}" class="btn btn-success" download="${outputFileName}">
-                        <i class="fas fa-download"></i> Download Excel File
-                    </a>
-                `;
-            } catch (error) {
-                resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-            } finally {
-                convertBtn.disabled = false;
-                convertBtn.innerHTML = '<i class="fas fa-file-excel"></i> Convert to Excel';
-                setTimeout(() => {
-                    progressBar.style.display = 'none';
-                    progress.style.width = '0%';
-                }, 1000);
-            }
+        const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/octet-stream'
+            },
+            body: formData
         });
+
+        if (!response.ok) {
+            const contentType = response.headers.get('Content-Type');
+            let errorMessage = 'Conversion failed';
+
+            if (contentType.includes('application/json')) {
+                const errorData = await response.json();
+                errorMessage = errorData.message || errorMessage;
+            } else {
+                const errorText = await response.text();
+                errorMessage = errorText.substring(0, 100); // Ambil sebagian untuk debug
+            }
+
+            throw new Error(errorMessage);
+        }
+
+        progress.style.width = '100%';
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        resultDiv.innerHTML = `
+            <a href="${url}" class="btn btn-success" download="${outputFileName}">
+                <i class="fas fa-download"></i> Download Excel File
+            </a>
+        `;
+    } catch (error) {
+        console.error('Fetch error:', error.message);
+        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+    } finally {
+        convertBtn.disabled = false;
+        convertBtn.innerHTML = '<i class="fas fa-file-excel"></i> Convert to Excel';
+        setTimeout(() => {
+            progressBar.style.display = 'none';
+            progress.style.width = '0%';
+        }, 1000);
+    }
+});
     });
 </script>
 @endsection

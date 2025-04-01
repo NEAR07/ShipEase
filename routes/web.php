@@ -11,6 +11,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PdfNumberingController;
 use App\Http\Controllers\PartlistConverterController;
+use App\Http\Controllers\PartnameConverterController;
 
 
 //Home
@@ -31,11 +32,16 @@ Route::get('/number-pdf', function () {
 });
 
 // partlist
-Route::post('/lan', [PartlistConverterController::class, 'convert'])->name('partlist.convert');
+Route::post('/partlistConverter', [PartlistConverterController::class, 'convert'])->name('partlist.convert');
 Route::get('/partlistConverter', function () {
     return view('Multimedia.partlistConverter');
 });
 
+Route::post('/partnameConverter', [PartnameConverterController::class, 'process'])->name('partnameConverter.process');
+Route::post('/partnameConverter/zip', [PartnameConverterController::class, 'downloadZip'])->name('partnameConverter.zip');
+Route::get('/partnameConverter', function () {
+    return view('Multimedia.partnameConverter');
+});
 
 //AI module
 Route::get('/text', function () {
