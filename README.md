@@ -27,9 +27,7 @@
 
 # Screenshots
 
-![Homepage](https://github.com/Omais-Rana/ContentCraft/blob/main/Screenshots/Home.png)
-![AI Module](https://github.com/Omais-Rana/ContentCraft/blob/main/Screenshots/AI%20Text%20Generator.png)
-![PDF Converter](https://github.com/Omais-Rana/ContentCraft/blob/main/Screenshots/Convert%20PDF.png)
-![QR Maker](https://github.com/Omais-Rana/ContentCraft/blob/main/Screenshots/QR%20Code%20Maker.png)
-![All Tools](https://github.com/Omais-Rana/ContentCraft/blob/main/Screenshots/Tools.png)
+![Homepage](https://github.com/NEAR07/ShipEase/blob/main/Screenshots/Home.png)
+![PDF Converter](https://github.com/NEAR07/ShipEase/blob/main/Screenshots/Convert%20PDF.png)
+![All Tools](https://github.com/NEAR07/ShipEase/blob/main/Screenshots/Tools.png)
  

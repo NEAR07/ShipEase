@@ -8,6 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ShipEase</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=2" type="image/x-icon">
+
     <!--Inter UI font-->
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
 
@@ -91,36 +94,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link page-scroll" href="{{ url('/text') }}">AI Writing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link page-scroll" href="{{ url('/image') }}">AI Image Analysis</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdownPDF"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Files
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
-                                <a class="dropdown-item" href="{{ url('/upload') }}">PDF to Word</a>
-                                <a class="dropdown-item" href="{{ url('/pdf-to-text') }}">PDF to Text</a>
-                                <a class="dropdown-item" href="{{ url('/word-to-pdf') }}">Word to PDF</a>
-
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdownPDF"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                More
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownPDF">
-                                <a class="dropdown-item" href="{{ url('/url-shortener') }}">Shorten URL</a>
-                                <a class="dropdown-item" href="{{ url('/qr-code') }}">QR Maker</a>
-                                <a class="dropdown-item" href="{{ url('/barcode') }}">Barcode Maker</a>
-
-                            </div>
-                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link page-scroll d-flex flex-row align-items-center text-primary"
                                 href="{{ url('/all-tools') }}">
