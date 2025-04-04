@@ -32,10 +32,44 @@
         margin-top: -10px;
         margin-bottom: 10px;
     }
+
+    /* Styling for search bar */
+    .search-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .search-input {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white; /* Menambahkan warna teks putih */
+    background-color: #333; /* Opsional: Mengubah latar belakang input agar kontras dengan teks putih */
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Mengubah warna placeholder menjadi abu-abu terang */
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #fd7014;
+    box-shadow: 0 0 5px rgba(253, 112, 20, 0.5);
+    color: white; /* Memastikan warna teks tetap putih saat input difokuskan */
+}
 </style>
 @section('content')
     <div class="container mt-6">
-        <div class="row py-6">
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search tools...">
+        </div>
+
+        <!-- Tools Cards -->
+        <div class="row py-6" id="toolsContainer">
             <div class="col-md-6 col-lg-4 mb-4">
                 <a href="{{ url('/merge_pdf') }}" class="card-link">
                     <div class="card">
@@ -54,42 +88,6 @@
                     </div>
                 </a>
             </div>
-            <!-- <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{{ url('/text') }}" class="card-link">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
-                                </div>
-                                <div class="col">
-                                    <h4>Code Writer</h4>
-                                    <span class="badge badge-info">AI Tool</span>
-                                    <p>Generate code with AI</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{{ url('/image') }}" class="card-link">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
-                                </div>
-                                <div class="col">
-                                    <h4>Image Analysis</h4>
-                                    <span class="badge badge-info">AI Tool</span>
-                                    <p>Know images better with AI</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div> -->
             <div class="col-md-6 col-lg-4 mb-4">
                 <a href="{{ url('/number-pdf') }}" class="card-link">
                     <div class="card">
@@ -138,6 +136,42 @@
                                     <h4>Partname <br>Converter</h4>
                                     <span class="badge badge-info">File Tool</span>
                                     <p>Merge Partname Converter </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <a href="{{ url('/download') }}" class="card-link">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                </div>
+                                <div class="col">
+                                    <h4>Resume Matlist<br></h4>
+                                    <span class="badge badge-info">File Tool</span>
+                                    <p>Resume Material List All Block Excel Based Application</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <a href="{{ url('/compare-download') }}" class="card-link">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                </div>
+                                <div class="col">
+                                    <h4>Compare Data<br></h4>
+                                    <span class="badge badge-info">File Tool</span>
+                                    <p>Compare Before & After Revision Matlist, Partlist, Apl Excel Based</p>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +250,52 @@
                     </div>
                 </a>
             </div>
-
         </div>
     </div>
+
+    <script>
+        // Save the initial order of the cards
+        const toolsContainer = document.getElementById('toolsContainer');
+        const originalOrder = Array.from(toolsContainer.getElementsByClassName('col-md-6'));
+
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+
+            if (searchTerm.trim() === '') {
+                // If search is cleared, restore the original order
+                originalOrder.forEach(tool => {
+                    tool.style.display = 'block';
+                    toolsContainer.appendChild(tool); // Re-append in original order
+                });
+                return;
+            }
+
+            // Filter and sort tools based on relevance
+            const tools = Array.from(toolsContainer.getElementsByClassName('col-md-6'));
+            tools.sort((a, b) => {
+                const titleA = a.querySelector('.card-body h4').innerText.toLowerCase();
+                const descriptionA = a.querySelector('.card-body p').innerText.toLowerCase();
+                const titleB = b.querySelector('.card-body h4').innerText.toLowerCase();
+                const descriptionB = b.querySelector('.card-body p').innerText.toLowerCase();
+
+                const matchA = (titleA.includes(searchTerm) ? 1 : 0) + (descriptionA.includes(searchTerm) ? 1 : 0);
+                const matchB = (titleB.includes(searchTerm) ? 1 : 0) + (descriptionB.includes(searchTerm) ? 1 : 0);
+
+                return matchB - matchA; // Sort descending by relevance
+            });
+
+            // Re-append sorted tools to the container
+            tools.forEach(tool => {
+                const title = tool.querySelector('.card-body h4').innerText.toLowerCase();
+                const description = tool.querySelector('.card-body p').innerText.toLowerCase();
+
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    tool.style.display = 'block';
+                    toolsContainer.appendChild(tool); // Move matching tools to the top
+                } else {
+                    tool.style.display = 'none'; // Hide non-matching tools
+                }
+            });
+        });
+    </script>
 @endsection

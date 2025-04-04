@@ -1,95 +1,115 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class PartlistConverterController extends Controller
 {
     public function convert(Request $request)
     {
-        Log::info('Starting partlist conversion process');
+        Log::info('Convert method called');
+
+        // Validasi input file dengan ekstensi kustom
+        try {
+            $request->validate([
+                'list_file' => 'required|file', // Hilangkan mimes untuk fleksibilitas
+                'lst_file' => 'required|file',
+                'csv_file' => 'required|file',
+            ]);
+
+            // Validasi ekstensi secara manual
+            $listFile = $request->file('list_file');
+            $lstFile = $request->file('lst_file');
+            $csvFile = $request->file('csv_file');
+
+            $listExt = strtolower($listFile->getClientOriginalExtension());
+            $lstExt = strtolower($lstFile->getClientOriginalExtension());
+            $csvExt = strtolower($csvFile->getClientOriginalExtension());
+
+            if (!in_array($listExt, ['list', 'lst'])) {
+                throw new \Exception('The list file must have a .list or .lst extension.');
+            }
+            if (!in_array($lstExt, ['list', 'lst'])) {
+                throw new \Exception('The lst file must have a .list or .lst extension.');
+            }
+            if ($csvExt !== 'csv') {
+                throw new \Exception('The csv file must have a .csv extension.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Validation failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Validation failed: ' . $e->getMessage()], 400);
+        }
+
+        Log::info('Validation passed');
+
+        // Buat direktori temp jika belum ada
+        $tempDir = storage_path('app\temp');
+        if (!File::exists($tempDir)) {
+            try {
+                File::makeDirectory($tempDir, 0755, true);
+                Log::info("Created temp directory: $tempDir");
+            } catch (\Exception $e) {
+                Log::error('Failed to create temp directory: ' . $e->getMessage());
+                return response()->json(['error' => 'Failed to create temp directory'], 500);
+            }
+        }
+
+        $inputListFile = $tempDir . '\\' . uniqid() . '.' . $listExt;
+        $inputLstFile = $tempDir . '\\' . uniqid() . '.' . $lstExt;
+        $inputCsvFile = $tempDir . '\\' . uniqid() . '.csv';
+        $outputFile = $tempDir . '\\converted_' . time() . '.xlsx';
 
         try {
-            // Tingkatkan batas waktu eksekusi
-            set_time_limit(300); // 5 menit
-
-            // Validasi input
-            $request->validate([
-                'list' => 'required|file|extensions:list',
-                'lst' => 'required|file|extensions:lst',
-                'csv' => 'required|file|extensions:csv',
-                'output' => 'required|string|regex:/\.xlsx$/'
-            ]);
-            Log::info('File validation passed');
-
-            // Simpan file sementara dengan nama asli
-            $listFile = $request->file('list')->storeAs('temp', $request->file('list')->getClientOriginalName());
-            $lstFile = $request->file('lst')->storeAs('temp', $request->file('lst')->getClientOriginalName());
-            $csvFile = $request->file('csv')->storeAs('temp', $request->file('csv')->getClientOriginalName());
-            $outputFile = $request->input('output');
-
-            $listPath = storage_path('app/' . $listFile);
-            $lstPath = storage_path('app/' . $lstFile);
-            $csvPath = storage_path('app/' . $csvFile);
-            $outputPath = public_path($outputFile);
-
-            Log::info("Temporary files stored: list=$listPath, lst=$lstPath, csv=$csvPath");
-            Log::info("Output path set to: $outputPath");
-
-            // Pastikan direktori public writable
-            $outputDir = dirname($outputPath);
-            if (!is_writable($outputDir)) {
-                Log::error("Output directory not writable: $outputDir");
-                return response()->json(['message' => 'Server error: Output directory not writable'], 500);
-            }
-
-            // Jalankan script Python
-            $pythonScript = base_path('scripts/partlist_converter.py');
-            if (!file_exists($pythonScript)) {
-                Log::error("Python script not found: $pythonScript");
-                return response()->json(['message' => 'Server error: Python script not found'], 500);
-            }
-
-            $process = new Process(['python', $pythonScript, $listPath, $lstPath, $csvPath, $outputPath]);
-            $process->setTimeout(300); // Timeout 5 menit
-            Log::info("Running command: " . $process->getCommandLine());
-
-            $process->run();
-            if (!$process->isSuccessful()) {
-                Log::error('Python process failed: ' . $process->getErrorOutput());
-                throw new ProcessFailedException($process);
-            }
-            Log::info('Python script executed successfully: ' . $process->getOutput());
-
-            // Periksa file output
-            if (!file_exists($outputPath)) {
-                Log::error("Output file not found: $outputPath");
-                return response()->json(['message' => 'Output file not generated'], 500);
-            }
-            if (filesize($outputPath) == 0) {
-                Log::error("Output file is empty: $outputPath");
-                return response()->json(['message' => 'Output file is empty'], 500);
-            }
-            Log::info("Output file generated: $outputPath, size=" . filesize($outputPath) . " bytes");
-
-            // Hapus file sementara
-            @unlink($listPath);
-            @unlink($lstPath);
-            @unlink($csvPath);
-            Log::info('Temporary files deleted');
-
-            // Kembalikan file Excel
-            Log::info('Returning Excel file for download');
-            return response()->download($outputPath, $outputFile, [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            ])->deleteFileAfterSend(true);
-
+            $listFile->move($tempDir, basename($inputListFile));
+            $lstFile->move($tempDir, basename($inputLstFile));
+            $csvFile->move($tempDir, basename($inputCsvFile));
+            Log::info('Input files saved: ' . $inputListFile . ', ' . $inputLstFile . ', ' . $inputCsvFile);
         } catch (\Exception $e) {
-            Log::error('Conversion failed: ' . $e->getMessage() . ' | Trace: ' . $e->getTraceAsString());
-            return response()->json(['message' => 'Conversion failed: ' . $e->getMessage()], 500);
+            Log::error('Failed to save input files: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to save input files'], 500);
         }
+
+        if (!file_exists($inputListFile) || !file_exists($inputLstFile) || !file_exists($inputCsvFile)) {
+            Log::error('One or more input files not found after saving');
+            return response()->json(['error' => 'Failed to save input files'], 500);
+        }
+
+        $pythonScript = base_path('scripts\partlist_converter.py');
+        $pythonCmd = 'python';
+        $command = "$pythonCmd \"$pythonScript\" \"$inputListFile\" \"$inputLstFile\" \"$inputCsvFile\" \"$outputFile\"";
+        Log::info('Python command: ' . $command);
+
+        Log::info('Starting Python execution');
+        $output = shell_exec($command . " 2>&1");
+        Log::info('Python execution completed');
+        Log::info('Python script output: ' . ($output ?? 'No output captured'));
+
+        File::delete($inputListFile);
+        File::delete($inputLstFile);
+        File::delete($inputCsvFile);
+
+        if (!file_exists($outputFile)) {
+            Log::error('Output file not created: ' . $outputFile);
+            return response()->json(['error' => 'Failed to convert files: ' . ($output ?? 'No error message')], 500);
+        }
+
+        $filesize = filesize($outputFile);
+        Log::info('Output file exists, size before download: ' . $filesize . ' bytes, path: ' . $outputFile);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . basename($outputFile) . '"');
+        header('Content-Length: ' . $filesize);
+        header('Cache-Control: no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        $bytesSent = readfile($outputFile);
+        Log::info('Bytes sent to browser: ' . $bytesSent . ' for file: ' . $outputFile);
+
+        File::delete($outputFile);
+        exit;
     }
 }

@@ -10,7 +10,7 @@ from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
 from ultralytics import YOLO
 import sys
 
-# Fungsi pemrosesan DXF (tidak diubah dari file asli)
+# Fungsi pemrosesan DXF (tetap sama)
 def render_dxf_to_image(doc):
     fig = plt.figure(figsize=(10, 10), dpi=100)
     ax = fig.add_axes([0, 0, 1, 1])
@@ -140,7 +140,10 @@ def main():
 
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
-    model_path = r"model_partname.pt"
+    
+    # Tentukan jalur model relatif terhadap lokasi skrip
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(script_dir, "model_partname.pt")
 
     if not os.path.exists(input_folder):
         print(f"Error: Input folder not found at {input_folder}")

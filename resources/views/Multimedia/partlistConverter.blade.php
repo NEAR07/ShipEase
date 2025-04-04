@@ -7,52 +7,12 @@
         background-size: cover;
         font-family: Arial, sans-serif;
     }
-    .container {
-        margin-top: 60px;
-        margin-bottom: 50px;
-    }
-    .guideline-box {
-        background-color:rgb(0, 0, 0);
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .guideline-title {
-        color:rgb(249, 249, 249);
-        font-weight: bold;
-    }
-    .guideline-step {
-        margin: 10px 0;
-    }
     .file-input {
-        margin: 15px 0;
+        margin: 20px 0;
     }
-    .file-item {
-        display: flex;
-        align-items: center;
-        margin: 5px 0;
-        padding: 5px;
-        background-color: #f8f9fa;
-        border-radius: 4px;
-    }
-    #file-list {
-        margin: 10px 0;
-    }
-    .btn-primary {
-        background-color: #355887;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-    }
-    .btn-primary:hover {
-        background-color: #b30000;
-    }
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-    .btn-danger:hover {
-        background-color: #c82333;
+    .input-label {
+        font-weight: bold;
+        margin-bottom: 5px;
     }
     .progress-bar {
         width: 100%;
@@ -68,73 +28,45 @@
         width: 0%;
         transition: width 0.3s;
     }
-    .form-container {
-        background-color: rgba(0, 0, 0, 0.95);
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
 </style>
 
-<div class="container">
+<div class="container mt-6 mb-5">
     <div class="row">
         <div class="col-md-3">
             <div class="guideline-box">
                 <h4 class="guideline-title text-center">Steps to Follow</h4>
                 <ul class="list-unstyled">
-                    <li class="guideline-step"><span style="font-weight: bolder">1.</span> Upload <b>.list</b>, <b>.lst</b>, and <b>.csv</b> files</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">2.</span> Specify output <b>.xlsx</b> file name</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">3.</span> Click "Convert to Excel"</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">4.</span> Download the result</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">1.</span> Upload Profil Nesting List (.list or .lst)</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">2.</span> Upload Profil (.list or .lst)</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">3.</span> Upload Database (.csv)</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">4.</span> Click Convert to Excel</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">5.</span> Download the Excel file</li>
                 </ul>
             </div>
         </div>
 
         <div class="col-md-9">
-            <div class="form-container">
-                <h3>Convert Partlist to Excel</h3>
-                <form id="convert-form" action="{{ route('partlist.convert') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+            <div class="position-relative">
+                <h3>Upload Partlist Files</h3>
+                
+                <div class="file-input">
+                    <div class="input-label">Profil Nesting List (.list or .lst)</div>
+                    <input type="file" class="form-control" id="list-upload" accept=".list,.lst" required>
+                </div>
+                
+                <div class="file-input">
+                    <div class="input-label">Profil (.list or .lst)</div>
+                    <input type="file" class="form-control" id="lst-upload" accept=".list,.lst" required>
+                </div>
+                
+                <div class="file-input">
+                    <div class="input-label">Database (.csv)</div>
+                    <input type="file" class="form-control" id="csv-upload" accept=".csv" required>
+                </div>
 
-                    <div class="file-input">
-                        <label for="listFile" class="form-label" style="font-weight: bold">Upload .list File:</label>
-                        <input type="file" name="list" id="listFile" class="form-control" accept=".list" required>
-                        @error('list')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="file-input">
-                        <label for="lstFile" class="form-label" style="font-weight: bold">Upload .lst File:</label>
-                        <input type="file" name="lst" id="lstFile" class="form-control" accept=".lst" required>
-                        @error('lst')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="file-input">
-                        <label for="csvFile" class="form-label" style="font-weight: bold">Upload .csv File:</label>
-                        <input type="file" name="csv" id="csvFile" class="form-control" accept=".csv" required>
-                        @error('csv')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div id="file-list"></div>
-
-                    <div class="file-input">
-                        <label for="outputFile" class="form-label" style="font-weight: bold">Output .xlsx File Name:</label>
-                        <input type="text" name="output" id="outputFile" class="form-control" placeholder="e.g., output.xlsx" required>
-                        @error('output')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <button type="submit" id="convert-btn" class="btn btn-primary mt-2" disabled>
-                        <i class="fas fa-file-excel"></i> Convert to Excel
-                    </button>
-                </form>
-
+                <button id="convert-btn" class="btn btn-primary mt-2">
+                    <i class="fas fa-file-excel"></i> Convert to Excel
+                </button>
                 <div class="progress-bar mt-2">
                     <div class="progress"></div>
                 </div>
@@ -146,136 +78,78 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('convert-form');
+        const listUpload = document.getElementById('list-upload');
+        const lstUpload = document.getElementById('lst-upload');
+        const csvUpload = document.getElementById('csv-upload');
         const convertBtn = document.getElementById('convert-btn');
         const resultDiv = document.getElementById('result');
         const progressBar = document.querySelector('.progress-bar');
         const progress = document.querySelector('.progress');
-        const fileList = document.getElementById('file-list');
-        const inputs = {
-            list: document.getElementById('listFile'),
-            lst: document.getElementById('lstFile'),
-            csv: document.getElementById('csvFile')
-        };
-        let files = {};
 
-        Object.keys(inputs).forEach(type => {
-            inputs[type].addEventListener('change', () => {
-                if (inputs[type].files.length > 0) {
-                    files[type] = inputs[type].files[0];
-                    updateFileList();
-                }
-            });
-        });
-
-        function updateFileList() {
-            fileList.innerHTML = '';
-            let allFilesSelected = true;
-
-            ['list', 'lst', 'csv'].forEach((type, index) => {
-                if (files[type]) {
-                    const div = document.createElement('div');
-                    div.className = 'file-item';
-                    div.innerHTML = `
-                        <span style="margin-right: 10px;">${index + 1}.</span>
-                        <span style="flex-grow: 1;">${files[type].name}</span>
-                        <button class="btn btn-sm btn-danger remove-btn" data-type="${type}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    fileList.appendChild(div);
-                } else {
-                    allFilesSelected = false;
-                }
-            });
-
-            convertBtn.disabled = !allFilesSelected;
-        }
-
-        fileList.addEventListener('click', (e) => {
-            const btn = e.target.closest('.remove-btn');
-            if (btn) {
-                const type = btn.dataset.type;
-                delete files[type];
-                inputs[type].value = '';
-                updateFileList();
-            }
-        });
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            console.log('Form submitted');
-            console.log('Files:', files);
-            console.log('Output filename:', document.getElementById('outputFile').value);
-
-            if (Object.keys(files).length !== 3) {
-                resultDiv.innerHTML = `<div class="alert alert-warning">Please upload all required files (.list, .lst, .csv)</div>`;
+        // Tambahkan di bagian <script> di partlistConverter.blade.php
+        convertBtn.addEventListener('click', async () => {
+            if (!listUpload.files.length || !lstUpload.files.length || !csvUpload.files.length) {
+                alert('Please upload all required files (Profil Nesting List, Profil, Database)');
                 return;
             }
 
-            const outputFileName = document.getElementById('outputFile').value;
-            if (!outputFileName.endsWith('.xlsx')) {
-                resultDiv.innerHTML = `<div class="alert alert-warning">Output file name must end with .xlsx</div>`;
+            const listExt = listUpload.files[0].name.split('.').pop().toLowerCase();
+            const lstExt = lstUpload.files[0].name.split('.').pop().toLowerCase();
+            const csvExt = csvUpload.files[0].name.split('.').pop().toLowerCase();
+
+            if (!['list', 'lst'].includes(listExt) || !['list', 'lst'].includes(lstExt) || csvExt !== 'csv') {
+                alert('Invalid file types. Please upload .list or .lst for Profil Nesting List and Profil, and .csv for Database.');
                 return;
             }
 
             const formData = new FormData();
-            formData.append('list', files['list']);
-            formData.append('lst', files['lst']);
-            formData.append('csv', files['csv']);
-            formData.append('output', outputFileName);
+            formData.append('list_file', listUpload.files[0]);
+            formData.append('lst_file', lstUpload.files[0]);
+            formData.append('csv_file', csvUpload.files[0]);
 
             try {
-        convertBtn.disabled = true;
-        convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
-        progressBar.style.display = 'block';
-        progress.style.width = '0%';
+                console.log('Sending request to /partlist-converter'); // Debugging
+                convertBtn.disabled = true;
+                convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
+                progressBar.style.display = 'block';
+                progress.style.width = '0%';
 
-        const response = await fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/octet-stream'
-            },
-            body: formData
-        });
+                const response = await fetch("{{ route('partlist.convert') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
 
-        if (!response.ok) {
-            const contentType = response.headers.get('Content-Type');
-            let errorMessage = 'Conversion failed';
+                console.log('Response received:', response.status); // Debugging
 
-            if (contentType.includes('application/json')) {
-                const errorData = await response.json();
-                errorMessage = errorData.message || errorMessage;
-            } else {
-                const errorText = await response.text();
-                errorMessage = errorText.substring(0, 100); // Ambil sebagian untuk debug
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Conversion failed');
+                }
+
+                progress.style.width = '100%';
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                resultDiv.innerHTML = `
+                    <a href="${url}" class="btn btn-success" download="converted.xlsx">
+                        <i class="fas fa-download"></i> Download Excel File
+                    </a>
+                `;
+            } catch (error) {
+                console.error('Error during request:', error); // Debugging
+                resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            } finally {
+                convertBtn.disabled = false;
+                convertBtn.innerHTML = '<i class="fas fa-file-excel"></i> Convert to Excel';
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                    progress.style.width = '0%';
+                }, 1000);
             }
-
-            throw new Error(errorMessage);
-        }
-
-        progress.style.width = '100%';
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        resultDiv.innerHTML = `
-            <a href="${url}" class="btn btn-success" download="${outputFileName}">
-                <i class="fas fa-download"></i> Download Excel File
-            </a>
-        `;
-    } catch (error) {
-        console.error('Fetch error:', error.message);
-        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-    } finally {
-        convertBtn.disabled = false;
-        convertBtn.innerHTML = '<i class="fas fa-file-excel"></i> Convert to Excel';
-        setTimeout(() => {
-            progressBar.style.display = 'none';
-            progress.style.width = '0%';
-        }, 1000);
-    }
-});
+        });
     });
 </script>
 @endsection

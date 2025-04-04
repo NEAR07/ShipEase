@@ -81,6 +81,19 @@
     .alert {
         margin-top: 10px;
     }
+    /* Styling untuk log */
+    #log-container {
+        height: 150px; /* Tinggi tetap */
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        overflow-y: auto; /* Scroll vertikal */
+        padding: 10px;
+        font-size: 12px; /* Ukuran font kecil */
+        line-height: 1.2;
+        margin-top: 10px;
+    }
 </style>
 
 <div class="container">
@@ -120,6 +133,7 @@
                 <div class="progress-bar mt-2">
                     <div class="progress"></div>
                 </div>
+                <div id="log-container"></div> <!-- Kotak log -->
                 <div id="result" class="mt-3"></div>
             </div>
         </div>
@@ -135,6 +149,7 @@
         const progress = document.querySelector('.progress');
         const fileInput = document.getElementById('dxfFiles');
         const fileList = document.getElementById('file-list');
+        const logContainer = document.getElementById('log-container');
         let files = [];
 
         fileInput.addEventListener('change', () => {
@@ -172,6 +187,19 @@
             }
         });
 
+        // Fungsi untuk menampilkan log secara bertahap (simulasi real-time)
+        function appendLog(message) {
+            const lines = message.split('\n');
+            lines.forEach(line => {
+                if (line.trim()) {
+                    const logEntry = document.createElement('div');
+                    logEntry.textContent = line;
+                    logContainer.appendChild(logEntry);
+                    logContainer.scrollTop = logContainer.scrollHeight; // Scroll ke bawah
+                }
+            });
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -189,6 +217,7 @@
                 progressBar.style.display = 'block';
                 progress.style.width = '0%';
                 resultDiv.innerHTML = '';
+                logContainer.innerHTML = ''; // Reset log
 
                 const response = await fetch(form.action, {
                     method: 'POST',
@@ -206,22 +235,59 @@
 
                 progress.style.width = '100%';
                 const data = await response.json();
-                resultDiv.innerHTML = data.log ? `<div class="alert alert-info">${data.log.replace(/\n/g, '<br>')}</div>` : '';
 
-                if (data.output_files && data.output_files.length > 0) {
-                    // Tombol untuk unduh folder sebagai ZIP
-                    const zipUrl = `${form.action}/zip`;
-                    resultDiv.innerHTML += `
-                        <a href="#" id="download-zip" class="btn btn-success mt-2" data-files='${JSON.stringify(data.output_files)}'>
-                            <i class="fas fa-file-archive"></i> Download Processed Folder as ZIP
-                        </a>
-                    `;
+                // Simulasi real-time dengan menampilkan log secara bertahap
+                if (data.log) {
+                    const logLines = data.log.split('\n');
+                    let index = 0;
+                    const logInterval = setInterval(() => {
+                        if (index < logLines.length) {
+                            appendLog(logLines[index]);
+                            index++;
+                        } else {
+                            clearInterval(logInterval);
+                            showDownloadButton(data);
+                        }
+                    }, 100); // Tambah baris setiap 100ms
+                } else {
+                    showDownloadButton(data);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error.message);
+                appendLog(`Error: ${error.message}`);
+                resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            } finally {
+                convertBtn.disabled = false;
+                convertBtn.innerHTML = '<i class="fas fa-cogs"></i> Process DXF Files';
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                    progress.style.width = '0%';
+                }, 1000);
+            }
+        });
 
-                    // Logika untuk unduh ZIP
-                    document.getElementById('download-zip').addEventListener('click', async (e) => {
-                        e.preventDefault();
-                        const outputFiles = JSON.parse(e.target.dataset.files);
+        function showDownloadButton(data) {
+            if (data.output_files && data.output_files.length > 0) {
+                const zipUrl = `${form.action}/zip`;
+                resultDiv.innerHTML = `
+                    <a href="#" id="download-zip" class="btn btn-success mt-2" data-files='${JSON.stringify(data.output_files)}'>
+                        <i class="fas fa-file-archive"></i> Download Processed Folder as ZIP
+                    </a>
+                `;
+
+                document.getElementById('download-zip').addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const downloadBtn = e.target;
+                    if (downloadBtn.disabled) return;
+
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+
+                    try {
+                        const outputFiles = JSON.parse(downloadBtn.dataset.files);
                         const fileUrls = outputFiles.map(file => file.url);
+
+                        appendLog('Preparing ZIP file for download...');
 
                         const zipResponse = await fetch(zipUrl, {
                             method: 'POST',
@@ -234,10 +300,17 @@
                         });
 
                         if (!zipResponse.ok) {
-                            throw new Error('Failed to create ZIP');
+                            const errorText = await zipResponse.text();
+                            throw new Error(`Failed to create ZIP: ${errorText}`);
                         }
 
                         const blob = await zipResponse.blob();
+                        if (blob.size === 0) {
+                            throw new Error('Downloaded ZIP file is empty');
+                        }
+
+                        appendLog('ZIP file ready. Starting download...');
+
                         const url = window.URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
@@ -246,20 +319,20 @@
                         a.click();
                         document.body.removeChild(a);
                         window.URL.revokeObjectURL(url);
-                    });
-                }
-            } catch (error) {
-                console.error('Fetch error:', error.message);
-                resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-            } finally {
-                convertBtn.disabled = false;
-                convertBtn.innerHTML = '<i class="fas fa-cogs"></i> Process DXF Files';
-                setTimeout(() => {
-                    progressBar.style.display = 'none';
-                    progress.style.width = '0%';
-                }, 1000);
+
+                        appendLog('Download completed!');
+                        resultDiv.innerHTML = '<div class="alert alert-success">Download completed!</div>';
+                    } catch (error) {
+                        console.error('Download ZIP error:', error);
+                        appendLog(`Error: ${error.message}`);
+                        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+                    } finally {
+                        downloadBtn.disabled = false;
+                        downloadBtn.innerHTML = '<i class="fas fa-file-archive"></i> Download Processed Folder as ZIP';
+                    }
+                });
             }
-        });
+        }
     });
 </script>
 @endsection

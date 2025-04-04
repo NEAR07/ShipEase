@@ -146,8 +146,7 @@
                 <!-- <div class="col-sm-5 mr-auto"> -->
                 <div class="col-sm-10 mr-auto">
                     <h5>About ShipEase</h5>
-                    <p class="text-muted">We provide a library of handy tools to help you solve problems of all types.
-                        All files are deleted right after processing.</p>
+                    <p class="text-muted">Shipease is a sutes application that helps simplify the process of ship design work. With a various of tools features according to the needs of ship designers and drafters.</p>
                     <!-- <ul class="list-inline social social-sm">
                         <li class="list-inline-item">
                             <a href="#"><i class="fa-brands fa-facebook"></i></a>

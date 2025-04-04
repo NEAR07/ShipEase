@@ -12,6 +12,8 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PdfNumberingController;
 use App\Http\Controllers\PartlistConverterController;
 use App\Http\Controllers\PartnameConverterController;
+use App\Http\Controllers\ResumeDownloadController;
+use App\Http\Controllers\CompareDownloadController;
 
 
 //Home
@@ -32,8 +34,8 @@ Route::get('/number-pdf', function () {
 });
 
 // partlist
-Route::post('/partlistConverter', [PartlistConverterController::class, 'convert'])->name('partlist.convert');
-Route::get('/partlistConverter', function () {
+Route::post('/partlist-converter', [PartlistConverterController::class, 'convert'])->name('partlist.convert');
+Route::get('/partlist-converter', function () {
     return view('Multimedia.partlistConverter');
 });
 
@@ -43,6 +45,11 @@ Route::get('/partnameConverter', function () {
     return view('Multimedia.partnameConverter');
 });
 
+Route::get('/download', [ResumeDownloadController::class, 'showDownloadPage'])->name('download.page');
+Route::get('/download/resume', [ResumeDownloadController::class, 'downloadResume'])->name('resume.download');
+
+Route::get('/compare-download', [CompareDownloadController::class, 'show'])->name('compare.page');
+Route::get('/compare-download/file', [CompareDownloadController::class, 'downloadCompare'])->name('compare.download');
 //AI module
 Route::get('/text', function () {
     return view('AI.text');

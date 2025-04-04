@@ -1,12 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use ZipArchive;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class PartnameConverterController extends Controller
 {
@@ -15,73 +14,78 @@ class PartnameConverterController extends Controller
         set_time_limit(300); // 5 menit
 
         $request->validate([
-            'dxf_files.*' => 'required|file|mimes:dxf'
+            'dxf_files.*' => 'required|file|extensions:dxf'
         ]);
 
-        $log = "Starting DXF processing...\n";
+        $log = "Memulai pemrosesan DXF...\n";
         $outputFiles = [];
 
-        // Buat folder sementara untuk input dan output
-        $inputFolder = 'temp/input_' . uniqid();
-        $outputFolder = 'processed_dxf/output_' . uniqid();
-        Storage::makeDirectory($inputFolder);
-        Storage::makeDirectory($outputFolder);
+        $tempDir = storage_path('app\temp');
+        $outputDir = storage_path('app\processed_dxf');
+        if (!File::exists($tempDir)) {
+            File::makeDirectory($tempDir, 0755, true);
+            Log::info("Membuat direktori temp: $tempDir");
+        }
+        if (!File::exists($outputDir)) {
+            File::makeDirectory($outputDir, 0755, true);
+            Log::info("Membuat direktori output: $outputDir");
+        }
 
-        // Simpan file yang diunggah ke folder input
+        $inputFolder = $tempDir . '\\input_' . uniqid();
+        $outputFolder = $outputDir . '\\output_' . uniqid();
+        File::makeDirectory($inputFolder);
+        File::makeDirectory($outputFolder);
+
         $uploadedFiles = $request->file('dxf_files');
         foreach ($uploadedFiles as $file) {
             $filename = $file->getClientOriginalName();
-            $file->storeAs($inputFolder, $filename);
-            $log .= "Uploaded $filename to temporary folder...\n";
+            Log::info("File: $filename, MIME: " . $file->getClientMimeType());
+            $file->move($inputFolder, $filename);
+            $log .= "Mengunggah $filename ke folder sementara...\n";
         }
 
+        Log::info('Isi folder input: ' . json_encode(scandir($inputFolder)));
+
         try {
-            $pythonScript = base_path('scripts/partname_converter.py');
-            $fullInputPath = storage_path('app/' . $inputFolder);
-            $fullOutputPath = storage_path('app/' . $outputFolder);
+            $pythonScript = base_path('scripts\partname_converter.py');
+            $pythonCmd = 'python'; // Ganti dengan jalur Python Anda
+            $command = "$pythonCmd \"$pythonScript\" \"$inputFolder\" \"$outputFolder\"";
+            Log::info("Perintah Python: " . $command);
 
-            if (!file_exists($pythonScript)) {
-                throw new \Exception("Python script not found at $pythonScript");
-            }
+            Log::info('Memulai eksekusi Python');
+            $output = shell_exec($command . " 2>&1");
+            Log::info('Eksekusi Python selesai');
+            Log::info('Output skrip Python: ' . ($output ?? 'Tidak ada output yang ditangkap'));
 
-            $process = new Process(['python', $pythonScript, $fullInputPath, $fullOutputPath]);
-            $process->setTimeout(300); // 5 menit
-            Log::info("Running command: " . $process->getCommandLine());
+            $log .= $output ?? "Tidak ada output dari skrip Python.\n";
 
-            $process->run();
+            $outputFilesList = File::files($outputFolder);
+            Log::info("Isi folder output setelah pemrosesan: " . json_encode(array_map(function ($file) {
+                return $file->getFilename();
+            }, $outputFilesList)));
 
-            if (!$process->isSuccessful()) {
-                $errorOutput = $process->getErrorOutput();
-                Log::error("Python process failed: " . $errorOutput);
-                throw new ProcessFailedException($process);
-            }
-
-            $log .= $process->getOutput();
-
-            // Ambil daftar file hasil dari folder output
-            $outputFilesList = Storage::files($outputFolder);
-            foreach ($outputFilesList as $outputFilePath) {
-                $filename = basename($outputFilePath);
-                $url = Storage::url($outputFilePath);
+            foreach ($outputFilesList as $outputFile) {
+                $filename = $outputFile->getFilename();
+                $url = Storage::url('processed_dxf/' . basename($outputFolder) . '/' . $filename);
                 $outputFiles[] = [
                     'name' => $filename,
                     'url' => $url,
-                    'path' => $outputFilePath // Simpan path untuk ZIP
+                    'path' => $outputFile->getPathname()
                 ];
-                $log .= "Processed file available: $filename\n";
+                $log .= "File yang diproses tersedia: $filename\n";
             }
 
             if (empty($outputFiles)) {
-                $log .= "No files were processed.\n";
+                $log .= "Tidak ada file yang diproses.\n";
             }
 
-            // Simpan path folder output di sesi untuk digunakan saat membuat ZIP
             session(['output_folder' => $outputFolder]);
+            Log::info("Folder output disimpan di sesi: $outputFolder");
         } catch (\Exception $e) {
-            $log .= "Error during processing: " . $e->getMessage() . "\n";
-            Log::error("Error during processing: " . $e->getMessage());
+            $log .= "Kesalahan selama pemrosesan: " . $e->getMessage() . "\n";
+            Log::error("Kesalahan selama pemrosesan: " . $e->getMessage());
         } finally {
-            Storage::deleteDirectory($inputFolder);
+            File::deleteDirectory($inputFolder);
         }
 
         return response()->json([
@@ -93,34 +97,71 @@ class PartnameConverterController extends Controller
     public function downloadZip(Request $request)
     {
         $outputFolder = session('output_folder');
-        if (!$outputFolder || !Storage::exists($outputFolder)) {
-            return response()->json(['message' => 'Output folder not found'], 404);
+        if (!$outputFolder || !File::exists($outputFolder)) {
+            Log::error("Folder output tidak ditemukan di sesi atau tidak ada: " . ($outputFolder ?? 'null'));
+            return response()->json(['message' => 'Folder output tidak ditemukan'], 404);
         }
+
+        $filesInOutput = File::files($outputFolder);
+        Log::info("Isi folder output sebelum membuat ZIP: " . json_encode(array_map(function ($file) {
+            return $file->getFilename();
+        }, $filesInOutput)));
 
         $zipFileName = 'processed_dxf_files.zip';
-        $zipPath = storage_path('app/temp/' . $zipFileName);
-        Storage::makeDirectory('temp');
+        $zipPath = storage_path('app\temp\\' . $zipFileName);
+        File::makeDirectory(storage_path('app\temp'), 0755, true, true);
 
-        $zip = new ZipArchive;
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-            $files = Storage::files($outputFolder);
+        $zip = new \ZipArchive;
+        if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+            $folderName = basename($outputFolder);
+            $files = File::allFiles($outputFolder);
             foreach ($files as $file) {
-                $filePath = storage_path('app/' . $file);
-                $relativeName = basename($file);
-                $zip->addFile($filePath, $relativeName);
+                $relativePath = $folderName . '/' . $file->getRelativePathname();
+                $filePath = $file->getPathname();
+                if (File::exists($filePath)) {
+                    $zip->addFile($filePath, $relativePath);
+                    Log::info("Menambahkan file ke ZIP: $relativePath dari $filePath");
+                } else {
+                    Log::warning("File tidak ditemukan saat menambahkan ke ZIP: $filePath");
+                }
             }
             $zip->close();
+            Log::info("ZIP berhasil dibuat di: $zipPath");
+
+            // Verifikasi isi ZIP dan ukuran file
+            if (File::exists($zipPath)) {
+                Log::info("Ukuran file ZIP sebelum dikirim: " . File::size($zipPath) . " bytes");
+                $zipTest = new \ZipArchive;
+                if ($zipTest->open($zipPath) === TRUE) {
+                    Log::info("Jumlah file di ZIP: " . $zipTest->numFiles);
+                    for ($i = 0; $i < $zipTest->numFiles; $i++) {
+                        Log::info("File di ZIP: " . $zipTest->getNameIndex($i));
+                    }
+                    $zipTest->close();
+                } else {
+                    Log::error("Gagal membuka ZIP untuk verifikasi: $zipPath");
+                }
+            } else {
+                Log::error("File ZIP tidak ditemukan setelah pembuatan: $zipPath");
+                return response()->json(['message' => 'File ZIP tidak ditemukan'], 500);
+            }
         } else {
-            return response()->json(['message' => 'Failed to create ZIP'], 500);
+            Log::error("Gagal membuka ZIP untuk penulisan: $zipPath");
+            return response()->json(['message' => 'Gagal membuat ZIP'], 500);
         }
 
+        // Kirim file ZIP tanpa menghapus dulu
         $response = response()->download($zipPath, $zipFileName, [
-            'Content-Type' => 'application/zip'
+            'Content-Type' => 'application/zip',
+            'Content-Length' => File::size($zipPath), // Tambahkan ukuran file untuk kejelasan
         ])->deleteFileAfterSend(true);
 
-        // Hapus folder output setelah ZIP diunduh
-        Storage::deleteDirectory($outputFolder);
+        Log::info("Mengirimkan file ZIP untuk diunduh: $zipPath");
+
+        // Pembersihan ditunda hingga setelah respons dikirim
+        File::deleteDirectory($outputFolder);
         session()->forget('output_folder');
+        Log::info("Folder output dihapus dan sesi dibersihkan: $outputFolder");
 
         return $response;
     }
