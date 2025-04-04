@@ -27,7 +27,7 @@
 
 # Screenshots
 
-![Homepage](https://github.com/NEAR07/ShipEase/blob/main/Screenshots/Home.png)
-![PDF Converter](https://github.com/NEAR07/ShipEase/blob/main/Screenshots/Convert%20PDF.png)
-![All Tools](https://github.com/NEAR07/ShipEase/blob/main/Screenshots/Tools.png)
+![Homepage](https://github.com/NEAR07/ShipEase/blob/april/Screenshots/Home.png)
+![PDF Converter](https://github.com/NEAR07/ShipEase/blob/april/Screenshots/Convert%20PDF.png)
+![All Tools](https://github.com/NEAR07/ShipEase/blob/april/Screenshots/Tools.png)
  
