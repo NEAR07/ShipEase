@@ -22,7 +22,6 @@
 6. Run this command to create a table `php artisan make:migration create_url_mappings_table` and migrate using `php artisan migrate`
 7. Run the command `php artisan serve` from the project root and visit `localhost:8000` to access the application
 
-<h4>Note: For PDF to Word converter you will need to have Python installed</h4>
 
 # Screenshots
 
