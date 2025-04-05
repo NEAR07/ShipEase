@@ -161,7 +161,7 @@
             </div>
             <div class="row mt-5">
                 <div class="col-12 text-muted text-center small-xl">
-                    &copy; 2025 ShipEase - All Rights Reserved
+                    &copy; 2025 ShipEase Design Improvement Team - All Rights Reserved
                 </div>
             </div>
         </div>
