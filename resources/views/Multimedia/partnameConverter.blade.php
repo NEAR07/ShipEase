@@ -111,7 +111,7 @@
 
         <div class="col-md-9">
             <div class="form-container">
-                <h3>Convert Partname in DXF</h3>
+                <h3>PartName Merger ZWCAD for files DXF</h3>
                 <form id="convert-form" action="{{ route('partnameConverter.process') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 

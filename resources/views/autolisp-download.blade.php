@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<title>Download Compare Data Excel</title>
+<title>Download AutoLISP Tools for ZWCAD</title>
 
 @section('content')
 <style>
@@ -43,6 +43,9 @@
     .alert {
         margin-top: 10px;
     }
+    .file-list {
+        margin-top: 20px;
+    }
 </style>
 
 <div class="container">
@@ -51,26 +54,46 @@
             <div class="guideline-box">
                 <h4 class="guideline-title text-center">Steps to Follow</h4>
                 <ul class="list-unstyled">
-                    <li class="guideline-step"><span style="font-weight: bolder">1.</span> Click the download button</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">2.</span> Save the <b>.xls</b> file</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">3.</span> Open with Excel to use</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">1.</span> Select an AutoLISP tool</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">2.</span> Click the download button</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">3.</span> Load in ZWCAD using APPLOAD</li>
                 </ul>
             </div>
         </div>
 
         <div class="col-md-9">
             <div class="form-container">
-                <h3>Compare changes in Matlist, Partlist, and APL revisions directly in Excel</h3>
+                <h3>Download AutoLISP Tools for ZWCAD</h3>
                 
-                <p>Click the button below to download the Compare Data Excel application :</p>
+                <p>Select and download AutoLISP tools from the list below:</p>
                 
-                <a href="{{ route('compare.download') }}" 
-                   class="btn btn-primary" 
-                   id="download-btn">
-                    <i class="fas fa-download"></i> Download file
-                </a>
+                <form action="{{ route('autolisp.download') }}" method="POST" id="download-form">
+                    @csrf
+                    <div class="file-list">
+                        @foreach($files as $filename => $description)
+                            <div class="mb-3">
+                                <label>
+                                    <input type="radio" name="filename" value="{{ $filename }}" required>
+                                    {{ $description }} ({{ $filename }})
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
 
-                <div id="result" class="mt-3"></div>
+                    <button type="submit" 
+                           class="btn btn-primary" 
+                           id="download-btn">
+                        <i class="fas fa-download"></i> Download Selected Tool
+                    </button>
+
+                    @if(session('error'))
+                        <div class="alert alert-danger mt-3">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <div id="result" class="mt-3"></div>
+                </form>
             </div>
         </div>
     </div>
@@ -80,8 +103,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         const downloadBtn = document.getElementById('download-btn');
         const resultDiv = document.getElementById('result');
+        const form = document.getElementById('download-form');
 
-        downloadBtn.addEventListener('click', async (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             if (downloadBtn.disabled) return;
@@ -94,7 +118,7 @@
                 // Simulasi proses download
                 await new Promise(resolve => setTimeout(resolve, 500));
                 
-                window.location.href = downloadBtn.href;
+                form.submit();
                 
                 await new Promise(resolve => setTimeout(resolve, 500));
                 resultDiv.innerHTML = '<div class="alert alert-success">File downloaded successfully!</div>';
@@ -102,7 +126,7 @@
                 resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
             } finally {
                 downloadBtn.disabled = false;
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download CEK MATLIST.xls';
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download Selected Tool';
             }
         });
     });

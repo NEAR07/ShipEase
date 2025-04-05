@@ -79,9 +79,9 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Merge and Manage <br>Your PDF</h4>
+                                    <h4>Merge and <br>Manage  PDF</h4>
                                     <span class="badge badge-info">File tool</span>
-                                    <p>Merger your PDF</p>
+                                    <p>Combine and organize multiple PDF files effortlessly</p>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                 <div class="col">
                                     <h4>Numbering Eticket NestProf</h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Numbering PDF Eticket NestProf</p>
+                                    <p>Automate numbering and nesting profiles for e-tickets</p>
                                 </div>
                             </div>
                         </div>
@@ -115,9 +115,9 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Convert Partlist <br>to Excel</h4>
+                                    <h4>Convert Data <br>Cadmatic to Excel</h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Convert Data Cadmatic to Excel</p>
+                                    <p>Convert Cadmatic nesting lists to Excel for data management</p>
                                 </div>
                             </div>
                         </div>
@@ -133,9 +133,9 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Partname <br>Converter</h4>
+                                    <h4>PartName Merger<br></h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Merge Partname Converter </p>
+                                    <p>Merge partname from DXF files into a single, organized output</p>
                                 </div>
                             </div>
                         </div>
@@ -169,9 +169,27 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Compare Data<br></h4>
+                                    <h4>Revision Comparator<br></h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Compare Before & After Revision Matlist, Partlist, Apl Excel Based</p>
+                                    <p>Compare Matlist, Partlist, and APL revisions in Excel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <a href="{{ url('/autolisp-download') }}" class="card-link">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                </div>
+                                <div class="col">
+                                    <h4>ZWCAD<br>ScriptMaster</h4>
+                                    <span class="badge badge-info">File Tool</span>
+                                    <p>A collection of AutoLISP scripts to automate CAD projects</p>
                                 </div>
                             </div>
                         </div>

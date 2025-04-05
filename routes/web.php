@@ -14,6 +14,7 @@ use App\Http\Controllers\PartlistConverterController;
 use App\Http\Controllers\PartnameConverterController;
 use App\Http\Controllers\ResumeDownloadController;
 use App\Http\Controllers\CompareDownloadController;
+use App\Http\Controllers\AutolispDownloadController;
 
 
 //Home
@@ -50,6 +51,10 @@ Route::get('/download/resume', [ResumeDownloadController::class, 'downloadResume
 
 Route::get('/compare-download', [CompareDownloadController::class, 'show'])->name('compare.page');
 Route::get('/compare-download/file', [CompareDownloadController::class, 'downloadCompare'])->name('compare.download');
+
+Route::get('/autolisp-download', [AutolispDownloadController::class, 'show'])->name('autolisp.show');
+Route::post('/autolisp-download', [AutolispDownloadController::class, 'downloadAutolisp'])->name('autolisp.download');
+
 //AI module
 Route::get('/text', function () {
     return view('AI.text');
