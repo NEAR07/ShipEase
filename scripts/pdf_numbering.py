@@ -138,8 +138,8 @@ def number_pdf(input_pdf_path, output_pdf_path, json_file_path):
                 c = canvas.Canvas(temp_pdf, pagesize=(rect.width, rect.height))
                 c.setFont("Verdana", 6)
 
-                # Sesuaikan koordinat untuk A4 (lebar max 595.28)
-                x, y = (500, 18)
+                # Sesuaikan koordinat untuk A3
+                x, y = (740, 18)
                 print(f"Drawing text at x={x + 12.5}, y={y + 10.2} for block, x={x + 1}, y={y - 0.4} for sheet")
                 c.drawString(x + 12.5, y + 10.2, f"{block}")
                 c.drawString(x + 1, y - 0.4, f"{sheet}")

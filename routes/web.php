@@ -15,6 +15,7 @@ use App\Http\Controllers\PartnameConverterController;
 use App\Http\Controllers\ResumeDownloadController;
 use App\Http\Controllers\CompareDownloadController;
 use App\Http\Controllers\AutolispDownloadController;
+use App\Http\Controllers\DxfProcessorController;
 
 
 //Home
@@ -40,11 +41,13 @@ Route::get('/partlist-converter', function () {
     return view('Multimedia.partlistConverter');
 });
 
-Route::post('/partnameConverter', [PartnameConverterController::class, 'process'])->name('partnameConverter.process');
-Route::post('/partnameConverter/zip', [PartnameConverterController::class, 'downloadZip'])->name('partnameConverter.zip');
-Route::get('/partnameConverter', function () {
-    return view('Multimedia.partnameConverter');
-});
+// Route::post('/partnameConverter', [PartnameConverterController::class, 'process'])->name('partnameConverter.process');
+// Route::post('/partnameConverter/zip', [PartnameConverterController::class, 'downloadZip'])->name('partnameConverter.zip');
+// Route::get('/partnameConverter', function () {
+//     return view('Multimedia.partnameConverter');
+// });
+Route::get('/partnameConverter', [PartnameConverterController::class, 'index'])->name('partnameConverter.form');
+Route::get('/partnameConverter/download', [PartnameConverterController::class, 'downloadApp'])->name('partnameConverter.download');
 
 Route::get('/download', [ResumeDownloadController::class, 'showDownloadPage'])->name('download.page');
 Route::get('/download/resume', [ResumeDownloadController::class, 'downloadResume'])->name('resume.download');
@@ -54,6 +57,9 @@ Route::get('/compare-download/file', [CompareDownloadController::class, 'downloa
 
 Route::get('/autolisp-download', [AutolispDownloadController::class, 'show'])->name('autolisp.show');
 Route::post('/autolisp-download', [AutolispDownloadController::class, 'downloadAutolisp'])->name('autolisp.download');
+
+Route::get('/process-dxf', [DxfProcessorController::class, 'index'])->name('process.dxf.form');
+Route::get('/download-app', [DxfProcessorController::class, 'downloadApp'])->name('download.app');
 
 //AI module
 Route::get('/text', function () {

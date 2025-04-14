@@ -28,7 +28,91 @@
         width: 0%;
         transition: width 0.3s;
     }
+    /* Styling untuk pop-up */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    .popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 80%;
+        max-height: 80%;
+        overflow: auto;
+    }
+    .popup-img {
+        max-width: 100%;
+        max-height: 500px;
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+    .close-btn:hover {
+        color: #ff0000;
+    }
+    /* Styling untuk iklan */
+    .ad-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Latar belakang semi-transparan */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999; /* Pastikan iklan di atas elemen lain */
+    }
+    .ad-content {
+        display: flex;
+        flex-direction: column; /* Susun elemen secara vertikal */
+        align-items: center; /* Pusatkan elemen secara horizontal */
+        text-align: center;
+    }
+    .ad-img {
+        max-width: 80%;
+        max-height: 70vh; /* Batasi tinggi gambar iklan */
+    }
+    .ad-next-btn {
+        margin-top: 20px; /* Kurangi jarak antara gambar dan tombol */
+        margin-right: 50px;
+        padding: 10px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: rgb(18, 56, 94); /* Warna biru seperti tombol Next */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .ad-next-btn:hover {
+        background-color: rgb(61, 104, 147); /* Warna biru lebih gelap saat hover */
+    }
 </style>
+
+<!-- Kontainer untuk iklan -->
+<div class="ad-container" id="adContainer">
+    <div class="ad-content">
+        <img src="{{ asset('assets/img/before-after/cadmatic to excel.jpg') }}" alt="Iklan" class="ad-img">
+        <button class="ad-next-btn" id="adNextBtn">Next</button>
+    </div>
+</div>
 
 <div class="container mt-6 mb-5">
     <div class="row">
@@ -47,7 +131,7 @@
 
         <div class="col-md-9">
             <div class="position-relative">
-                <h3>Upload Partlist Files</h3>
+                <h3>Upload Files</h3>
                 
                 <div class="file-input">
                     <div class="input-label">Profil Nesting List (.list or .lst)</div>
@@ -55,7 +139,7 @@
                 </div>
                 
                 <div class="file-input">
-                    <div class="input-label">Profil (.list or .lst)</div>
+                    <div class="input-label">Report for Profil Nesting (.list or .lst)</div>
                     <input type="file" class="form-control" id="lst-upload" accept=".list,.lst" required>
                 </div>
                 
@@ -86,6 +170,11 @@
         const progressBar = document.querySelector('.progress-bar');
         const progress = document.querySelector('.progress');
 
+            // Logika untuk iklan
+        adNextBtn.addEventListener('click', () => {
+            adContainer.style.display = 'none';
+            mainApp.style.display = 'block';
+        });
         // Tambahkan di bagian <script> di partlistConverter.blade.php
         convertBtn.addEventListener('click', async () => {
             if (!listUpload.files.length || !lstUpload.files.length || !csvUpload.files.length) {

@@ -43,7 +43,91 @@
     .alert {
         margin-top: 10px;
     }
+    /* Styling untuk pop-up */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    .popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 80%;
+        max-height: 80%;
+        overflow: auto;
+    }
+    .popup-img {
+        max-width: 100%;
+        max-height: 500px;
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+    .close-btn:hover {
+        color: #ff0000;
+    }
+    /* Styling untuk iklan */
+    .ad-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Latar belakang semi-transparan */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999; /* Pastikan iklan di atas elemen lain */
+    }
+    .ad-content {
+        display: flex;
+        flex-direction: column; /* Susun elemen secara vertikal */
+        align-items: center; /* Pusatkan elemen secara horizontal */
+        text-align: center;
+    }
+    .ad-img {
+        max-width: 80%;
+        max-height: 70vh; /* Batasi tinggi gambar iklan */
+    }
+    .ad-next-btn {
+        margin-top: 20px; /* Kurangi jarak antara gambar dan tombol */
+        margin-right: 50px;
+        padding: 10px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: rgb(18, 56, 94); /* Warna biru seperti tombol Next */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .ad-next-btn:hover {
+        background-color: rgb(61, 104, 147); /* Warna biru lebih gelap saat hover */
+    }
 </style>
+
+<!-- Kontainer untuk iklan -->
+<div class="ad-container" id="adContainer">
+    <div class="ad-content">
+        <img src="{{ asset('assets/img/before-after/resume matlist 1 block.jpg') }}" alt="Iklan" class="ad-img">
+        <button class="ad-next-btn" id="adNextBtn">Next</button>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
@@ -80,6 +164,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         const downloadBtn = document.getElementById('download-btn');
         const resultDiv = document.getElementById('result');
+
+            // Logika untuk iklan
+        adNextBtn.addEventListener('click', () => {
+            adContainer.style.display = 'none';
+            mainApp.style.display = 'block';
+        });
 
         downloadBtn.addEventListener('click', async (e) => {
             e.preventDefault();

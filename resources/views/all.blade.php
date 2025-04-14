@@ -97,9 +97,9 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Numbering Eticket NestProf</h4>
+                                    <h4>NestPlate Block & Sheet Numbering</h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Automate numbering and nesting profiles for e-tickets</p>
+                                    <p>Block and sheet numbering in eTicket on NestPlate drawing</p>
                                 </div>
                             </div>
                         </div>
@@ -115,9 +115,9 @@
                                     <i class="fa-solid fa-3x fa-gear"></i>
                                 </div>
                                 <div class="col">
-                                    <h4>Convert Data <br>Cadmatic to Excel</h4>
+                                    <h4>Convert NestProf <br>Cadmatic to Excel</h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>Convert Cadmatic nesting lists to Excel for data management</p>
+                                    <p>Convert data profile nesting list from Cadmatic to Excel</p>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +197,24 @@
                 </a>
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
+                <a href="{{ url('/process-dxf') }}" class="card-link">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                </div>
+                                <div class="col">
+                                    <h4>Resume Block<br>Based End Type</h4>
+                                    <span class="badge badge-info">File Tool</span>
+                                    <p>CAD Block Grouping Based on End Cut Type</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- <div class="col-md-6 col-lg-4 mb-4">
                 <a href="{{ url('/word-to-pdf') }}" class="card-link">
                     <div class="card">
                         <div class="card-body">
@@ -269,7 +287,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script>
         // Save the initial order of the cards

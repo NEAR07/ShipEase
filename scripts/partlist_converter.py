@@ -6,13 +6,15 @@ import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, Border, Side, Alignment
 
-# Unified process_file function to handle profile type and bar number detection
+# Modified process_file function to handle profile type and material
 def process_file(file_path):
     profile_types = []
+    materials = []
     bar_numbers = []
 
     with open(file_path, 'r') as file:
         current_profile = None
+        current_material = None
         for line in file:
             line = line.replace('|', '').strip()
 
@@ -21,28 +23,38 @@ def process_file(file_path):
             if profile_match:
                 current_profile = profile_match.group(1)
 
-            # Detect Bar number and append both Profile type and Bar number
+            # Detect Material
+            material_match = re.search(r"Material\s*:\s*(\S+)", line)
+            if material_match:
+                current_material = material_match.group(1)
+
+            # Detect Bar number and append Profile type, Material, and Bar number
             bar_number_match = re.search(r"Bar number\s*:\s*(\d+)", line)
-            if bar_number_match and current_profile:
+            if bar_number_match and current_profile and current_material:
                 profile_types.append(current_profile)
+                materials.append(current_material)
                 bar_numbers.append(int(bar_number_match.group(1)))
 
-    # Aggregate by Profile type and count the occurrences of Bar number
-    profile_summary = {}
-    for profile, bar in zip(profile_types, bar_numbers):
-        if profile not in profile_summary:
-            profile_summary[profile] = []
-        profile_summary[profile].append(bar)
+    # Aggregate by Profile type and Material
+    profile_material_summary = {}
+    for profile, material, bar in zip(profile_types, materials, bar_numbers):
+        key = (profile, material)
+        if key not in profile_material_summary:
+            profile_material_summary[key] = []
+        profile_material_summary[key].append(bar)
 
     # Create the resulting DataFrame with aggregated counts
     profile_type_resumes = []
+    material_resumes = []
     bar_number_resumes = []
-    for profile, bars in profile_summary.items():
+    for (profile, material), bars in profile_material_summary.items():
         profile_type_resumes.append(profile)
-        bar_number_resumes.append(len(bars))  # Count occurrences of each profile type
+        material_resumes.append(material)
+        bar_number_resumes.append(len(bars))  # Count occurrences for each profile-material combination
 
     df = pd.DataFrame({
         "Profile type resume": profile_type_resumes,
+        "Material resume": material_resumes,
         "Bar number resume": bar_number_resumes
     })
     
@@ -53,7 +65,7 @@ def split_profile_type(profile_type):
     pattern = r'[A-Za-z]+|\d+|X'
     matches = re.findall(pattern, profile_type)
     
-    # Pastikan hasilnya memiliki 8 elemen dengan nilai default
+    # Ensure the result has 8 elements with default values
     default_values = ['X', '0', 'X', '0', 'X', '0', 'X', '0']
     matches.extend(default_values[len(matches):])
     
@@ -134,7 +146,7 @@ def parse_list_file(file_path):
 
     return data, header_data
 
-# Function to parse the .lst file (original)
+# Function to parse the .lst file
 def parse_lst_file(lst_file_path):
     lst_data = {}
     with open(lst_file_path, 'r') as file:
@@ -150,7 +162,6 @@ def parse_lst_file(lst_file_path):
                     lst_data[length].append(bcode)
     return lst_data
 
-# Function to parse the .lst file with part
 def parse_lst_file_with_part(lst_file_path):
     lst_data_with_part = {}
     with open(lst_file_path, 'r') as file:
@@ -162,8 +173,8 @@ def parse_lst_file_with_part(lst_file_path):
                     bcode = parts[0].strip('* ')
                     length = parts[5].strip()
                     bcode_parts = bcode.split('-')
-                    if len(bcode_parts) >= 4:
-                        part = bcode_parts[3]
+                    if len(bcode_parts) >= 3:  # Changed to support 3 or more segments
+                        part = bcode_parts[-1]  # Use the last segment as part
                         key = (length, part)
                         if key not in lst_data_with_part:
                             lst_data_with_part[key] = []
@@ -203,6 +214,7 @@ def convert_to_number_barcode(ws, row):
             except ValueError:
                 pass
 
+
 def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_path, output_file_path):
     data, header_data = parse_list_file(list_file_path)
     lst_data = parse_lst_file(lst_file_path)
@@ -226,7 +238,7 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
     for cell in ws[2]:
         cell.font = bold_font
 
-    # Column width settings
+    # Set column widths
     ws.column_dimensions[openpyxl.utils.get_column_letter(2)].width = 16
     ws.column_dimensions[openpyxl.utils.get_column_letter(4)].width = 9
     ws.column_dimensions[openpyxl.utils.get_column_letter(8)].width = 21
@@ -246,20 +258,30 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
 
     ws.row_dimensions[2].height = 45.75
 
-    # Dictionary untuk menyimpan bcode yang cocok berdasarkan length dan part (4 angka terakhir)
+    # Dictionary for matching bcode based on length and part
     bcode_by_length_and_part = {}
     for length, bcodes in lst_data.items():
         for bcode in bcodes:
-            bcode_last_four = bcode[-4:] if len(bcode) >= 4 else bcode
-            key = (length, bcode_last_four)
-            if key not in bcode_by_length_and_part:
-                bcode_by_length_and_part[key] = []
-            bcode_by_length_and_part[key].append(bcode)
+            bcode_parts = bcode.split('-')
+            if len(bcode_parts) >= 3:  # Match barcodes with 3 or more segments
+                part = bcode_parts[-1]  # Use the last segment as part
+                key = (length, part)
+                if key not in bcode_by_length_and_part:
+                    bcode_by_length_and_part[key] = []
+                bcode_by_length_and_part[key].append(bcode)
 
     bcode_tracker = {key: 0 for key in bcode_by_length_and_part}
-    profile_to_bar_number = dict(zip(resume_data["Profile type resume"], resume_data["Bar number resume"]))
+
+    # Dictionary for mapping Profile type and Material to Bar number resume
+    profile_material_to_bar_number = {
+        (row["Profile type resume"], row["Material resume"]): row["Bar number resume"]
+        for _, row in resume_data.iterrows()
+    }
+
+    # Dictionary to store Profile type + Material combinations
     profile_material_combinations = {}
 
+    # Fill main data with sequential bcode logic
     for i in range(len(data["Part"])):
         part_value = data["Part"][i]
         cut_off_length = data["Cut off Length"][i]
@@ -270,6 +292,8 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
             index = bcode_tracker[key] % len(available_bcodes)
             part_value = available_bcodes[index]
             bcode_tracker[key] += 1
+        else:
+            part_value = data["Part"][i]
 
         profile_type = data["Profile type"][i]
         material = data["Material"][i]
@@ -278,32 +302,58 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
             profile_material_combinations[profile_material_key] = []
         profile_material_combinations[profile_material_key].append(i)
 
-        split_profile = ['X', '0', 'X', '0', 'X', '0', 'X', '0']
+        split_profile = split_profile_type(profile_type)
+
         row = [
-            profile_type, data["Bar-codenr"][i], data["Length bar"][i], material,
-            data["Bar number"][i], data["Total length"][i], data["Scrap-iron"][i],
-            part_value, cut_off_length, "", ""
-        ] + [""] + split_profile + ["", ""]
+            profile_type,
+            data["Bar-codenr"][i],
+            data["Length bar"][i],
+            material,
+            data["Bar number"][i],
+            data["Total length"][i],
+            data["Scrap-iron"][i],
+            part_value,
+            cut_off_length,
+            "",
+            "",
+            "",  # BAR-CODE for resume section (filled later)
+            profile_type,  # Profile Type for resume section
+            split_profile[1],  # Height
+            split_profile[2],  # X
+            split_profile[3],  # Width
+            split_profile[4],  # X
+            split_profile[5],  # Thick1
+            split_profile[6],  # X
+            split_profile[7],  # Thick2
+            material,  # MAT2
+            ""  # Bar number resume (filled later)
+        ]
         ws.append(row)
 
+    # Fill resume section
     resume_row_idx = 3
     resume_row_mapping = {}
     for (profile_type, material), indices in sorted(profile_material_combinations.items()):
         split_profile = split_profile_type(profile_type)
-        bar_number_resume = profile_to_bar_number.get(profile_type, 0)
+        bar_number_resume = profile_material_to_bar_number.get((profile_type, material), 0)
         ws.cell(row=resume_row_idx, column=13).value = profile_type
         ws.cell(row=resume_row_idx, column=14).value = split_profile[1]
+        ws.cell(row=resume_row_idx, column=15).value = split_profile[2]  # X
         ws.cell(row=resume_row_idx, column=16).value = split_profile[3]
+        ws.cell(row=resume_row_idx, column=17).value = split_profile[4]  # X
         ws.cell(row=resume_row_idx, column=18).value = split_profile[5]
+        ws.cell(row=resume_row_idx, column=19).value = split_profile[6]  # X
         ws.cell(row=resume_row_idx, column=20).value = split_profile[7]
         ws.cell(row=resume_row_idx, column=21).value = material
         ws.cell(row=resume_row_idx, column=22).value = bar_number_resume
         resume_row_mapping[resume_row_idx] = (profile_type, material, indices)
         resume_row_idx += 1
 
+    # Convert specific columns to numbers
     for excel_row in range(3, ws.max_row + 1):
         convert_to_number(ws, excel_row)
 
+    # Match CSV data for BAR-CODE
     for excel_row in range(3, ws.max_row + 1):
         excel_col_a = ws.cell(row=excel_row, column=1).value
         excel_col_c = ws.cell(row=excel_row, column=3).value
@@ -327,6 +377,7 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
                 convert_to_number_barcode(ws, excel_row)
                 break
 
+    # Fill BAR-CODE column in resume section
     for resume_row, (profile_type, material, indices) in resume_row_mapping.items():
         bar_codes = []
         for idx in indices:
@@ -340,7 +391,14 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
         bar_code_str = ", ".join(sorted(set(bar_codes)))
         ws.cell(row=resume_row, column=12).value = bar_code_str
 
-    # Alignment settings
+    # New logic: Clear columns L to V (12 to 22) if column L (12) is empty
+    for row in range(3, ws.max_row + 1):
+        barcode_cell = ws.cell(row=row, column=12).value
+        if barcode_cell is None or str(barcode_cell).strip() == "":
+            for col in range(12, 23):  # Columns L to V (12 to 22)
+                ws.cell(row=row, column=col).value = None
+
+    # Set alignment
     for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
         for cell in row:
             if 1 <= cell.column <= 9 or 12 <= cell.column <= 22:
@@ -351,9 +409,12 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
             if cell.column == 1 or cell.column == 13 or cell.column == 8:
                 cell.alignment = Alignment(horizontal='left', vertical='center')
 
+    # Remove duplicate rows in columns A to G
     unique_rows = set()
     for row in range(3, ws.max_row + 1):
-        row_data = tuple(ws.cell(row=row, column=col).value for col in range(1, 8))
+        row_data = tuple(
+            ws.cell(row=row, column=col).value for col in range(1, 8)
+        )
         if row_data in unique_rows:
             for col in range(1, 8):
                 cell = ws.cell(row=row, column=col)
@@ -362,12 +423,29 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
         else:
             unique_rows.add(row_data)
 
-    thin_border = Border(left=Side(style="thin"), right=Side(style="thin"), top=Side(style="thin"), bottom=Side(style="thin"))
-    top_thick_border = Border(left=Side(style="thin"), right=Side(style="thin"), top=Side(style="thick"), bottom=Side(style="thin"))
+    # Set borders
+    thin_border = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thin"),
+        bottom=Side(style="thin")
+    )
+
+    top_thick_border = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thick"),
+        bottom=Side(style="thin")
+    )
 
     for cell in ws[2]:
         if 1 <= cell.column <= 9:
-            cell.border = Border(left=Side(style="thick"), right=Side(style="thick"), top=Side(style="thick"), bottom=Side(style="thick"))
+            cell.border = Border(
+                left=Side(style="thick"),
+                right=Side(style="thick"),
+                top=Side(style="thick"),
+                bottom=Side(style="thick")
+            )
 
     for row in ws.iter_rows(min_row=3, max_row=ws.max_row):
         if all(ws.cell(row=row[0].row, column=col).value not in [None, "", " "] for col in range(1, 10)):
@@ -391,35 +469,33 @@ def convert_list_to_xlsx(list_file_path, lst_file_path, resume_data, csv_file_pa
 
     for cell in ws[2]:
         if 12 <= cell.column <= 22:
-            cell.border = Border(left=Side(style="thick"), right=Side(style="thick"), top=Side(style="thick"), bottom=Side(style="thick"))
+            cell.border = Border(
+                left=Side(style="thick"),
+                right=Side(style="thick"),
+                top=Side(style="thick"),
+                bottom=Side(style="thick")
+            )
 
     for row in range(3, ws.max_row + 1):
         ws.row_dimensions[row].height = 25
 
-    for row in range(3, ws.max_row + 1):
-        profile_type = ws.cell(row=row, column=13).value
-        if profile_type == "X":
-            for col in range(12, 23):
-                ws.cell(row=row, column=col).value = None
-                ws.cell(row=row, column=col).border = None
-
     wb.save(output_file_path)
 
-def main(list_file_path, lst_file_path, csv_file_path, output_file_path):
-    try:
-        resume_df = process_file(list_file_path)
-        convert_list_to_xlsx(list_file_path, lst_file_path, resume_df, csv_file_path, output_file_path)
-        return True, "Excel file generated successfully!"
-    except Exception as e:
-        return False, str(e)
+def main():
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Convert Partlist files to Excel')
+    parser.add_argument('list_file', help='Path to the .list file')
+    parser.add_argument('lst_file', help='Path to the .lst file')
+    parser.add_argument('csv_file', help='Path to the CSV database file')
+    parser.add_argument('output_file', help='Path for the output Excel file')
+    
+    args = parser.parse_args()
+    
+    print("Processing files...")
+    resume_df = process_file(args.list_file)
+    convert_list_to_xlsx(args.list_file, args.lst_file, resume_df, args.csv_file, args.output_file)
+    print(f"Successfully created output file: {args.output_file}")
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 5:
-        print("Usage: python partlist_converter.py <list_file> <lst_file> <csv_file> <output_file>")
-        sys.exit(1)
-    
-    list_file_path, lst_file_path, csv_file_path, output_file_path = sys.argv[1:]
-    success, message = main(list_file_path, lst_file_path, csv_file_path, output_file_path)
-    print(message)
-    sys.exit(0 if success else 1)
+    main()

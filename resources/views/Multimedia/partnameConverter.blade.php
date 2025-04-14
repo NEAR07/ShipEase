@@ -25,19 +25,11 @@
     .guideline-step {
         margin: 10px 0;
     }
-    .file-input {
-        margin: 15px 0;
-    }
-    .file-item {
-        display: flex;
-        align-items: center;
-        margin: 5px 0;
-        padding: 5px;
-        background-color: #f8f9fa;
-        border-radius: 4px;
-    }
-    #file-list {
-        margin: 10px 0;
+    .form-container {
+        background-color: rgba(0, 0, 0, 0.95);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .btn-primary {
         background-color: #355887;
@@ -48,53 +40,107 @@
     .btn-primary:hover {
         background-color: #b30000;
     }
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
-    .btn-success {
-        margin-right: 10px;
-    }
-    .progress-bar {
-        width: 100%;
-        height: 20px;
-        background-color: #f1f1f1;
-        border-radius: 4px;
-        display: none;
-        overflow: hidden;
-    }
-    .progress {
-        height: 100%;
-        background-color: #007bff;
-        width: 0%;
-        transition: width 0.3s;
-    }
-    .form-container {
-        background-color: rgba(0, 0, 0, 0.95);
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
     .alert {
         margin-top: 10px;
     }
-    /* Styling untuk log */
     #log-container {
-        height: 150px; /* Tinggi tetap */
+        height: 150px;
         width: 100%;
         background-color: rgba(255, 255, 255, 0.9);
         border: 1px solid #ccc;
         border-radius: 4px;
-        overflow-y: auto; /* Scroll vertikal */
+        overflow-y: auto;
         padding: 10px;
-        font-size: 12px; /* Ukuran font kecil */
+        font-size: 12px;
         line-height: 1.2;
         margin-top: 10px;
+        display: none; /* Sembunyikan kecuali ada log */
+    }
+    /* Styling untuk pop-up */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    .popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 80%;
+        max-height: 80%;
+        overflow: auto;
+    }
+    .popup-img {
+        max-width: 100%;
+        max-height: 500px;
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+    .close-btn:hover {
+        color: #ff0000;
+    }
+    /* Styling untuk iklan */
+    .ad-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Latar belakang semi-transparan */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999; /* Pastikan iklan di atas elemen lain */
+    }
+    .ad-content {
+        display: flex;
+        flex-direction: column; /* Susun elemen secara vertikal */
+        align-items: center; /* Pusatkan elemen secara horizontal */
+        text-align: center;
+    }
+    .ad-img {
+        max-width: 80%;
+        max-height: 70vh; /* Batasi tinggi gambar iklan */
+    }
+    .ad-next-btn {
+        margin-top: 20px; /* Kurangi jarak antara gambar dan tombol */
+        margin-right: 50px;
+        padding: 10px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: rgb(18, 56, 94); /* Warna biru seperti tombol Next */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .ad-next-btn:hover {
+        background-color: rgb(61, 104, 147); /* Warna biru lebih gelap saat hover */
     }
 </style>
+
+<!-- Kontainer untuk iklan -->
+<div class="ad-container" id="adContainer">
+    <div class="ad-content">
+        <img src="{{ asset('assets/img/before-after/partnamge merge.jpg') }}" alt="Iklan" class="ad-img">
+        <button class="ad-next-btn" id="adNextBtn">Next</button>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
@@ -102,38 +148,23 @@
             <div class="guideline-box">
                 <h4 class="guideline-title text-center">Steps to Follow</h4>
                 <ul class="list-unstyled">
-                    <li class="guideline-step"><span style="font-weight: bolder">1.</span> Select a folder containing <b>.dxf</b> files</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">2.</span> Click "Process DXF Files"</li>
-                    <li class="guideline-step"><span style="font-weight: bolder">3.</span> Download processed files as a folder</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">1.</span> Click "Download App"</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">2.</span> Extract the ZIP file</li>
+                    <li class="guideline-step"><span style="font-weight: bolder">3.</span> Run the app to process your DXF files</li>
                 </ul>
             </div>
         </div>
 
         <div class="col-md-9">
             <div class="form-container">
-                <h3>PartName Merger ZWCAD for files DXF</h3>
-                <form id="convert-form" action="{{ route('partnameConverter.process') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <h3>PartName Merger ZWCAD for DXF Files</h3>
+                <p>Download our standalone application to process your DXF files locally.</p>
 
-                    <div class="file-input">
-                        <label for="dxfFiles" class="form-label" style="font-weight: bold">Select DXF Folder:</label>
-                        <input type="file" name="dxf_files[]" id="dxfFiles" class="form-control" accept=".dxf" webkitdirectory mozdirectory msdirectory odirectory directory multiple required>
-                        @error('dxf_files.*')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                <a href="{{ route('partnameConverter.download') }}" id="download-btn" class="btn btn-primary mt-2">
+                    <i class="fas fa-download"></i> Download App
+                </a>
 
-                    <div id="file-list"></div>
-
-                    <button type="submit" id="convert-btn" class="btn btn-primary mt-2" disabled>
-                        <i class="fas fa-cogs"></i> Process DXF Files
-                    </button>
-                </form>
-
-                <div class="progress-bar mt-2">
-                    <div class="progress"></div>
-                </div>
-                <div id="log-container"></div> <!-- Kotak log -->
+                <div id="log-container"></div>
                 <div id="result" class="mt-3"></div>
             </div>
         </div>
@@ -142,197 +173,34 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('convert-form');
-        const convertBtn = document.getElementById('convert-btn');
+        const downloadBtn = document.getElementById('download-btn');
         const resultDiv = document.getElementById('result');
-        const progressBar = document.querySelector('.progress-bar');
-        const progress = document.querySelector('.progress');
-        const fileInput = document.getElementById('dxfFiles');
-        const fileList = document.getElementById('file-list');
         const logContainer = document.getElementById('log-container');
-        let files = [];
 
-        fileInput.addEventListener('change', () => {
-            files = Array.from(fileInput.files);
-            updateFileList();
+            // Logika untuk iklan
+        adNextBtn.addEventListener('click', () => {
+            adContainer.style.display = 'none';
+            mainApp.style.display = 'block';
         });
 
-        function updateFileList() {
-            fileList.innerHTML = '';
-            convertBtn.disabled = files.length === 0;
-
-            files.forEach((file, index) => {
-                const div = document.createElement('div');
-                div.className = 'file-item';
-                div.innerHTML = `
-                    <span style="margin-right: 10px;">${index + 1}.</span>
-                    <span style="flex-grow: 1;">${file.webkitRelativePath || file.name}</span>
-                    <button class="btn btn-sm btn-danger remove-btn" data-index="${index}">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                fileList.appendChild(div);
-            });
-        }
-
-        fileList.addEventListener('click', (e) => {
-            const btn = e.target.closest('.remove-btn');
-            if (btn) {
-                const index = parseInt(btn.dataset.index);
-                files.splice(index, 1);
-                updateFileList();
-                const dt = new DataTransfer();
-                files.forEach(file => dt.items.add(file));
-                fileInput.files = dt.files;
-            }
-        });
-
-        // Fungsi untuk menampilkan log secara bertahap (simulasi real-time)
         function appendLog(message) {
-            const lines = message.split('\n');
-            lines.forEach(line => {
-                if (line.trim()) {
-                    const logEntry = document.createElement('div');
-                    logEntry.textContent = line;
-                    logContainer.appendChild(logEntry);
-                    logContainer.scrollTop = logContainer.scrollHeight; // Scroll ke bawah
-                }
-            });
+            logContainer.style.display = 'block';
+            const logEntry = document.createElement('div');
+            logEntry.textContent = message;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
         }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        downloadBtn.addEventListener('click', async (e) => {
+            appendLog('Starting download of PartName Merger.zip...');
+            resultDiv.innerHTML = '<div class="alert alert-info">Download in progress...</div>';
 
-            if (files.length === 0) {
-                resultDiv.innerHTML = `<div class="alert alert-warning">Please select a folder containing at least one .dxf file</div>`;
-                return;
-            }
-
-            const formData = new FormData();
-            files.forEach(file => formData.append('dxf_files[]', file));
-
-            try {
-                convertBtn.disabled = true;
-                convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                progressBar.style.display = 'block';
-                progress.style.width = '0%';
-                resultDiv.innerHTML = '';
-                logContainer.innerHTML = ''; // Reset log
-
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Processing failed');
-                }
-
-                progress.style.width = '100%';
-                const data = await response.json();
-
-                // Simulasi real-time dengan menampilkan log secara bertahap
-                if (data.log) {
-                    const logLines = data.log.split('\n');
-                    let index = 0;
-                    const logInterval = setInterval(() => {
-                        if (index < logLines.length) {
-                            appendLog(logLines[index]);
-                            index++;
-                        } else {
-                            clearInterval(logInterval);
-                            showDownloadButton(data);
-                        }
-                    }, 100); // Tambah baris setiap 100ms
-                } else {
-                    showDownloadButton(data);
-                }
-            } catch (error) {
-                console.error('Fetch error:', error.message);
-                appendLog(`Error: ${error.message}`);
-                resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-            } finally {
-                convertBtn.disabled = false;
-                convertBtn.innerHTML = '<i class="fas fa-cogs"></i> Process DXF Files';
-                setTimeout(() => {
-                    progressBar.style.display = 'none';
-                    progress.style.width = '0%';
-                }, 1000);
-            }
+            setTimeout(() => {
+                appendLog('Download initiated. Please check your downloads folder.');
+                resultDiv.innerHTML = '<div class="alert alert-success">Download initiated successfully!</div>';
+            }, 1000);
         });
-
-        function showDownloadButton(data) {
-            if (data.output_files && data.output_files.length > 0) {
-                const zipUrl = `${form.action}/zip`;
-                resultDiv.innerHTML = `
-                    <a href="#" id="download-zip" class="btn btn-success mt-2" data-files='${JSON.stringify(data.output_files)}'>
-                        <i class="fas fa-file-archive"></i> Download Processed Folder as ZIP
-                    </a>
-                `;
-
-                document.getElementById('download-zip').addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const downloadBtn = e.target;
-                    if (downloadBtn.disabled) return;
-
-                    downloadBtn.disabled = true;
-                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-
-                    try {
-                        const outputFiles = JSON.parse(downloadBtn.dataset.files);
-                        const fileUrls = outputFiles.map(file => file.url);
-
-                        appendLog('Preparing ZIP file for download...');
-
-                        const zipResponse = await fetch(zipUrl, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/zip'
-                            },
-                            body: JSON.stringify({ files: fileUrls })
-                        });
-
-                        if (!zipResponse.ok) {
-                            const errorText = await zipResponse.text();
-                            throw new Error(`Failed to create ZIP: ${errorText}`);
-                        }
-
-                        const blob = await zipResponse.blob();
-                        if (blob.size === 0) {
-                            throw new Error('Downloaded ZIP file is empty');
-                        }
-
-                        appendLog('ZIP file ready. Starting download...');
-
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'processed_dxf_files.zip';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        window.URL.revokeObjectURL(url);
-
-                        appendLog('Download completed!');
-                        resultDiv.innerHTML = '<div class="alert alert-success">Download completed!</div>';
-                    } catch (error) {
-                        console.error('Download ZIP error:', error);
-                        appendLog(`Error: ${error.message}`);
-                        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-                    } finally {
-                        downloadBtn.disabled = false;
-                        downloadBtn.innerHTML = '<i class="fas fa-file-archive"></i> Download Processed Folder as ZIP';
-                    }
-                });
-            }
-        }
     });
 </script>
 @endsection
+
