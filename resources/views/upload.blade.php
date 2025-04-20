@@ -4,7 +4,8 @@
 @section('content')
     <style>
         body {
-            background-image: url("{{ asset('assets/img/bg3.jpeg') }}");
+            /* background-image: url("{{ asset('assets/img/bg3.jpeg') }}"); */
+            background-image: url("{{ asset('assets/img/2nd bg.png') }}");
             background-size: cover;
         }
     </style>

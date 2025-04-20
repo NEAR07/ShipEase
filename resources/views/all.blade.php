@@ -2,7 +2,8 @@
 <title>Tools</title>
 <style>
     body {
-        background-image: url("{{ asset('assets/img/bg5.jpeg') }}");
+        /* background-image: url("{{ asset('assets/img/bg5.jpeg') }}"); */
+        background-image: url("{{ asset('assets/img/main bg.png') }}");
         background-size: cover;
     }
 
@@ -76,7 +77,7 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <img src="{{ asset('assets/img/icon/merge and manage your PDF.png') }}" alt="Merge and Manage PDF Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>Merge and <br>Manage  PDF</h4>
@@ -94,7 +95,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/Numbering pdf etiket nesting profile.png') }}" alt="Numbering pdf etiket nesting profile Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>NestPlate Block & Sheet Numbering</h4>
@@ -112,7 +114,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/convert partlist to Excel.png') }}" alt="convert partlist to Excel Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>Convert NestProf <br>Cadmatic to Excel</h4>
@@ -130,7 +133,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/merge partname.png') }}" alt="merge partname Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>PartName Merger<br></h4>
@@ -148,10 +152,11 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/Resume material list all block excel based.png') }}" alt="Resume material list all block excel based Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
-                                    <h4>Resume Matlist<br></h4>
+                                    <h4>Resume <br>Material List</h4>
                                     <span class="badge badge-info">File Tool</span>
                                     <p>Resume Material List All Block Excel Based Application</p>
                                 </div>
@@ -166,7 +171,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/Compare before & after revision matlist, partlist, APL excel based.png') }}" alt="Compare before & after revision matlist, partlist, APL excel based Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>Revision Comparator<br></h4>
@@ -184,7 +190,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/program lisp zwcad.png') }}" alt="program lisp zwcad Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>ZWCAD<br>ScriptMaster</h4>
@@ -202,12 +209,13 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-3x fa-gear"></i>
+                                    <!-- <i class="fa-solid fa-3x fa-gear"></i> -->
+                                    <img src="{{ asset('assets/img/icon/resume block based end type.png') }}" alt="resume block based end type Icon" style="width: 64px; height: 64px;">
                                 </div>
                                 <div class="col">
                                     <h4>Resume Block<br>Based End Type</h4>
                                     <span class="badge badge-info">File Tool</span>
-                                    <p>CAD Block Grouping Based on End Cut Type</p>
+                                    <p>CAD Block Grouping Based on End Cut Type for Enhanced Design Efficiency</p>
                                 </div>
                             </div>
                         </div>

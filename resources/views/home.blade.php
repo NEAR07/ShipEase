@@ -6,23 +6,27 @@
         }
 
         .bg-hero {
-            background-image: url("{{ asset('assets/img/bgsh.jpg') }}");
+            /* background-image: url("{{ asset('assets/img/bgsh.jpg') }}"); */
+            background-image: url("{{ asset('assets/img/main bgs.png') }}");
         }
 
         #features {
-            background-image: url("{{ asset('assets/img/bg2.jpeg') }}");
+            /* background-image: url("{{ asset('assets/img/bg2.jpeg') }}"); */
+            background-image: url("{{ asset('assets/img/2nd bg.png') }}");
             background-size: cover;
             padding: 60px 0;
         }
 
         #premium {
-            background-image: url("{{ asset('assets/img/bg3.jpeg') }}");
+            /* background-image: url("{{ asset('assets/img/bg3.jpeg') }}"); */
+            background-image: url("{{ asset('assets/img/2nd bg.png') }}");
             background-size: cover;
             background-color: rgba(16, 14, 14, 0.5);
         }
 
         #about {
-            background-image: url("{{ asset('assets/img/bg1.jpeg') }}");
+            /* background-image: url("{{ asset('assets/img/bg1.jpeg') }}"); */
+            background-image: url("{{ asset('assets/img/2nd bg.png') }}");
             background-size: cover;
             background-color: rgba(16, 14, 14, 0.5);
         }
